@@ -4,6 +4,10 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Vidas del jugador")]
+    [Tooltip("Cantidad de vidas que contrndra el jugador en la partida")]
+    public int lives;
+
     [Header("Parámetros de fuerza del impulso (clic)")]
     [Tooltip("Fuerza máxima que puede alcanzar el impulso al soltar el clic.")]
     public float maxForce = 10f;
@@ -189,5 +193,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning("La cámara no es ortográfica; se requiere otra lógica para el clamping en perspectiva.");
         }
+    }
+    /// <summary>
+    /// Se muere
+    /// </summary>
+    public void KillPlayer()
+    {
+        Destroy(gameObject);
     }
 }
