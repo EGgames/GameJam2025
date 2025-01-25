@@ -106,11 +106,10 @@ public class Enemy : MonoBehaviour
                     // Aplicar daño al jugador
                     playerController.TakeDamage(1); // Ajusta la cantidad de daño según sea necesario
                 }
-                else
+                if (playerController.isPoweredUp)
                 {
-                    // Si el jugador está en modo dash, destruir al enemigo y aumentar el score
-                    GameManager.Instance.ScoreCount(); // Contar el score aquí
-                    Destroy(gameObject);
+                    // Si el jugador está en modo powered up, matar al enemigo
+                    Die();
                 }
             }
         }
@@ -144,5 +143,6 @@ public class Enemy : MonoBehaviour
 
         // Destruir el enemigo
         Destroy(gameObject);
+        GameManager.Instance.ScoreCount(); // Contar el score aquí
     }
 }

@@ -15,9 +15,13 @@ public class ProjectilePlayer : MonoBehaviour
     //public GameObject hitEffect;
 
     private Rigidbody2D rb2D;
+    private SpriteRenderer spriteRenderer;
+    
+    private bool isPoweredUp;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         // Programar la destrucción del proyectil después de 'lifeTime' segundos
         Destroy(gameObject, lifeTime);
     }
@@ -37,6 +41,31 @@ public class ProjectilePlayer : MonoBehaviour
     {
         direction = dir.normalized;
         speed = spd;
+    }
+    
+    /// <summary>
+    /// Obtiene la dirección del proyectil.
+    /// </summary>
+    /// <returns>Dirección del proyectil.</returns>
+    public Vector2 GetDirection()
+    {
+        return direction;
+    }
+
+    /// <summary>
+    /// Obtiene la velocidad del proyectil.
+    /// </summary>
+    /// <returns>Velocidad del proyectil.</returns>
+    public float GetSpeed()
+    {
+        return speed;
+    }
+    
+    public void BouncePowerUp()
+    {
+        isPoweredUp = true;
+        // Cambiamos el color del sprite
+        spriteRenderer.color = Color.magenta;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -62,7 +91,7 @@ public class ProjectilePlayer : MonoBehaviour
         }
 
         // Ignorar colisiones con el propio jugador
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Projectile") || collision.gameObject.CompareTag("Jellyfish"))
             return;
 
         // Opcional: Instanciar un efecto visual al impactar
