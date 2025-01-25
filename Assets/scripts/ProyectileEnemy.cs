@@ -85,34 +85,9 @@ public class ProyectileEnemy : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.CompareTag("Proyectile"))
-        {
-            Debug.Log($"'{gameObject.name}' has impacted with a proyectile and got destroyed.");
-            Destroy(gameObject);
-        }
-    }
-
     public void Shoot()
     {
         Debug.Log($"'{gameObject.name}' has shot!");
-        
-        // Create a proyectile
-        GameObject proyectileObject = Instantiate(proyectilePrefab, transform.position, transform.rotation);
-        Collider2D proyectileCollider = proyectileObject.GetComponent<Collider2D>();
-
-        //ignore the collision between the proyectile and this enemy for a bit to prevent self attacking.
-        Physics2D.IgnoreCollision(proyectileCollider, collider, true);
-        StartCoroutine(ReenableCollision(proyectileCollider, collider));
-    }
-
-    private IEnumerator ReenableCollision(Collider2D proyectileCollider, Collider2D enemyCollider)
-    {
-        yield return new WaitForSeconds(1); // Adjust delay as necessary
-        if (proyectileCollider != null && enemyCollider != null)
-        {
-            Physics2D.IgnoreCollision(proyectileCollider, enemyCollider, false);
-        }
+        Instantiate(proyectilePrefab, transform.position, transform.rotation);
     }
 }
