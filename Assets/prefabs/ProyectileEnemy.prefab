@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2975158753886073811}
   m_Layer: 0
   m_Name: ProyectileEnemy
-  m_TagString: Untagged
+  m_TagString: ProjectileEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,7 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootIntervalSecs: 3
   proyectilePrefab: {fileID: 4469056592101994726, guid: 652a2cf89dce60e4db76fc28a83a17ea, type: 3}
-  target: {fileID: 0}
   moveSpeed: 100
   targetMaxDistance: 7
   targetMinDistance: 3

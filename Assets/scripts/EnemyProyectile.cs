@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Proyectile : MonoBehaviour
+public class EnemyProyectile : MonoBehaviour
 {
     public float despawnInSecs;
     public float maxVelocity;

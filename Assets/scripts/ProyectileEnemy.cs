@@ -7,7 +7,7 @@ public class ProyectileEnemy : MonoBehaviour
     // The interval between this enemy's shots (in seconds)
     public float shootIntervalSecs;
     public GameObject proyectilePrefab;
-    public GameObject target;
+    private GameObject target;
 
     private Collider2D collider;
     private Rigidbody2D rb;
@@ -23,12 +23,15 @@ public class ProyectileEnemy : MonoBehaviour
 
     private void Start()
     {
-        shootCooldownSecs = Random.Range(0, shootIntervalSecs);
+        //components
         collider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
 
-        // Ensure Rigidbody2D is set to Dynamic so it behaves as a physics object
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        //references
+        target = GameObject.FindGameObjectWithTag("Player");
+
+        //fields setup
+        shootCooldownSecs = Random.Range(0, shootIntervalSecs);
     }
 
     private void Update()
@@ -64,7 +67,7 @@ public class ProyectileEnemy : MonoBehaviour
 
         // Apply smooth physics-based movement using velocity
         // Instead of setting the velocity directly, we add a force to the Rigidbody2D
-        Vector2 velocityDifference = desiredVelocity - rb.velocity;
+        Vector2 velocityDifference = desiredVelocity - rb.linearVelocity;
         Vector2 forceToApply = velocityDifference * smoothFactor;
 
         // Apply the force to the Rigidbody2D to move it dynamically
