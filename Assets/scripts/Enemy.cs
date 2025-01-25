@@ -127,13 +127,10 @@ public class Enemy : MonoBehaviour
             // Accedemos al script de control del jugador
             PlayerController playerController = collision.gameObject.GetOrAddComponent<PlayerController>();
 
-            // Magnitud de la velocidad relativa en el impacto
-            float fuerzaChoque = collision.relativeVelocity.magnitude;
-
-            // Si el choque es suficientemente fuerte, destruimos al enemigo
-            if (fuerzaChoque >= fuerzaDestruccion)
+            // Si el jugador está en modo dash, destruimos al enemigo
+            if (playerController.isDashing)
             {
-                GameManager.Instance.ScoreCount(); //Contamos el score aqui
+                GameManager.Instance.ScoreCount(); // Contamos el score aqui
                 Destroy(gameObject);
             }
             else
