@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [Header("Vida del jugador")]
     [Tooltip("Cantidad de vida que contrndra el jugador en la partida")]
     public int health;
+    
+    [Tooltip("Tiempo de invulnerabilidad después de recibir daño.")]
+    public float damageCooldown = 1f;
 
     [Header("Parámetros de fuerza del impulso (clic)")]
     [Tooltip("Fuerza máxima que puede alcanzar el impulso al soltar el clic.")]
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public bool useColliderBounds = true;
 
     private Rigidbody2D rb2D;
+    private SpriteRenderer spriteRenderer;
 
     // --- Impulso con el mouse ---
     private float currentForce = 0f;
@@ -60,6 +64,8 @@ public class PlayerController : MonoBehaviour
     // --- Clamping en la cámara ---
     private float halfWidth = 0.5f;
     private float halfHeight = 0.5f;
+    
+    private float currentDamageCooldown = 0f;
 
     // Variable para guardar cuándo se inicia el clic
     private float pressStartTime;
@@ -67,6 +73,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         currentFuel = maxFuel;
 
         // Si queremos tomar automáticamente el tamaño del Collider2D
@@ -201,6 +208,19 @@ public class PlayerController : MonoBehaviour
         impulseVelocity = Vector2.zero;
         slowDownCoroutine = null;
     }
+    
+    private IEnumerator BeginDamageCooldown()
+    {
+        currentDamageCooldown = damageCooldown;
+        // Le damos un efecto visual de invulnerabilidad bajando la opacidad
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+        while (currentDamageCooldown > 0f)
+        {
+            currentDamageCooldown = Mathf.Max(0, currentDamageCooldown - Time.deltaTime);
+            yield return null;
+        }
+        spriteRenderer.color = Color.white;
+    }
 
     /// <summary>
     /// Mantiene la posición dentro de los límites de la cámara ortográfica.
@@ -250,8 +270,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void TakeDamage(int damage = 1)
     {
+        if (currentDamageCooldown > 0f) return;
         health -= damage;
         GameManager.Instance.UpdateLives(health);
+        StartCoroutine(BeginDamageCooldown());
         if (health <= 0)
         {
             KillPlayer();
