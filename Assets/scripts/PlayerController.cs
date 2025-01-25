@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Vidas del jugador")]
-    [Tooltip("Cantidad de vidas que contrndra el jugador en la partida")]
-    public int lives;
+    [FormerlySerializedAs("lives")]
+    [Header("Vida del jugador")]
+    [Tooltip("Cantidad de vida que contrndra el jugador en la partida")]
+    public int health;
 
     [Header("Parámetros de fuerza del impulso (clic)")]
     [Tooltip("Fuerza máxima que puede alcanzar el impulso al soltar el clic.")]
@@ -17,6 +19,16 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("Tiempo en segundos que tarda en reducir la velocidad del impulso hasta 0.")]
     public float slowDownTime = 1f;
+    
+    [Header("Sistema de combustible")]
+    [Tooltip("Capacidad máxima de combustible.")]
+    public float maxFuel = 100f;
+
+    [Tooltip("Tasa de consumo de combustible mientras se carga el impulso.")]
+    public float fuelConsumptionRate = 10f;
+
+    [Tooltip("Cantidad de combustible que se recarga por segundo.")]
+    public float fuelRechargeRate = 5f;
 
     [Header("Movimiento flotante con WASD (independiente)")]
     [Tooltip("Velocidad máxima al moverse con WASD.")]
@@ -38,7 +50,10 @@ public class PlayerController : MonoBehaviour
     private float currentForce = 0f;
     private Vector2 impulseVelocity = Vector2.zero;
     private Coroutine slowDownCoroutine;
-
+    
+    // --- Sistema de combustible ---
+    private float currentFuel;
+        
     // --- Movimiento flotante con WASD ---
     private Vector2 wasdVelocity = Vector2.zero;
 
@@ -49,6 +64,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
+        currentFuel = maxFuel;
 
         // Si queremos tomar automáticamente el tamaño del Collider2D
         if (useColliderBounds)
@@ -64,35 +80,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // ========== Impulso con el mouse ==========
-        if (Input.GetMouseButtonDown(0))
-        {
-            currentForce = 0f;
-            // Si se estaba frenando un impulso anterior, lo detenemos
-            if (slowDownCoroutine != null)
-            {
-                StopCoroutine(slowDownCoroutine);
-                slowDownCoroutine = null;
-            }
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            // Acumulamos fuerza mientras se mantiene el botón
-            currentForce += chargeRate * Time.deltaTime;
-            currentForce = Mathf.Clamp(currentForce, 0f, maxForce);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            // Al soltar, aplicamos una "velocidad" de impulso
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mouseWorldPos - transform.position).normalized;
-            impulseVelocity = direction * currentForce;
-
-            // Iniciamos la corrutina que frena el impulso poco a poco
-            slowDownCoroutine = StartCoroutine(SlowDownImpulse());
-        }
+        ChargeImpulse();
+        RechargeFuel();
+        
+        // Actualizar la UI del combustible
+        GameManager.Instance.UpdateFuelAmount(currentFuel);
     }
 
     void FixedUpdate()
@@ -108,7 +100,7 @@ public class PlayerController : MonoBehaviour
         if (input.magnitude > 0.01f)
         {
             // Añadimos aceleración en la dirección del input
-            wasdVelocity += input * wasdAcceleration * Time.fixedDeltaTime;
+            wasdVelocity += input * (wasdAcceleration * Time.fixedDeltaTime);
 
             // Limitamos a la velocidad máxima "moveSpeed"
             if (wasdVelocity.magnitude > moveSpeed)
@@ -136,9 +128,58 @@ public class PlayerController : MonoBehaviour
     void LateUpdate()
     {
         // Evitar que se salga de la cámara ortográfica
-        ClampPositionToCamera();
+        // ClampPositionToCamera(); // No es necesario ya que la cámara sigue al jugador
     }
 
+    private void ChargeImpulse()
+    {
+        // Si no hay suficiente combustible, no permitir cargar el impulso
+        if (currentFuel <= 0f) return;
+
+        float fuelConsumed;
+        
+        // ========== Impulso con el mouse ==========
+        if (Input.GetMouseButtonDown(0))
+        {
+            currentForce = 0f;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            // Acumulamos fuerza mientras se mantiene el botón
+            currentForce += chargeRate * Time.deltaTime;
+            
+            // Fuerza máxima depende del combustible disponible
+            // si combustible = maxFuel, entonces maxForce
+            // si combustible = 0, entonces 0
+            var finalMaxForce = Mathf.Lerp(0f, maxForce, currentFuel / maxFuel);
+            currentForce = Mathf.Clamp(currentForce, 0f, finalMaxForce);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            // Al soltar, aplicamos una "velocidad" de impulso
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mouseWorldPos - transform.position).normalized;
+            impulseVelocity = direction * currentForce;
+            
+            // Consumir combustible
+            currentFuel = Mathf.Max(0f, currentFuel - fuelConsumptionRate);
+
+            // Iniciamos la corrutina que frena el impulso poco a poco
+            slowDownCoroutine = StartCoroutine(SlowDownImpulse());
+        }
+    }
+    
+    private void RechargeFuel()
+    {
+        // Recargar combustible si no estamos cargando el impulso y ya no hay velocidad residual de impulso
+        if (!Input.GetMouseButton(0) && impulseVelocity == Vector2.zero)
+        {
+            currentFuel = Mathf.Min(maxFuel, currentFuel + fuelRechargeRate * Time.deltaTime);
+        }
+    }
+    
     /// <summary>
     /// Corrutina para frenar gradualmente el impulso (impulseVelocity) en slowDownTime segundos.
     /// </summary>
@@ -199,6 +240,21 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void KillPlayer()
     {
+        Debug.Log("El jugador ha muerto");
+        GameManager.Instance.GameOver();
         Destroy(gameObject);
+    }
+    
+    /// <summary>
+    /// Toma daño
+    /// </summary>
+    public void TakeDamage(int damage = 1)
+    {
+        health -= damage;
+        GameManager.Instance.UpdateLives(health);
+        if (health <= 0)
+        {
+            KillPlayer();
+        }
     }
 }

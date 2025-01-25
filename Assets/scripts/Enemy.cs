@@ -12,48 +12,46 @@ public class Enemy : MonoBehaviour
     public float fuerzaDestruccion = 5f;
 
     [Header("Movimiento / Persecución")]
-    [Tooltip("Velocidad horizontal base del enemigo. Si es negativa, empezará moviéndose a la izquierda.")]
-    public float velocidadHorizontal = -5f;
-
-    [Tooltip("Velocidad máxima para ajustar posición vertical hacia el jugador.")]
-    public float velocidadVerticalMax = 2f;
-
-    [Tooltip("Factor de suavizado (cuanto mayor, más lentamente se ajusta la velocidad vertical).")]
-    public float suavizadoVertical = 2f;
+    [Tooltip("Velocidad base del enemigo")]
+    public float velocidad = -5f;
 
     [Header("Alternancia de color y garras")]
     [Tooltip("Cada cuántos segundos alterna entre garras activas/rojas y garras inactivas/color original.")]
     public float intervaloCambiarGarras = 2f;
 
     // Referencias internas
-    private Transform player;          // Para perseguir al jugador
+    private Transform _player;          // Para perseguir al jugador
     private Vector2 velocidadActual;   // Velocidad (x, y) actual del enemigo
-    private SpriteRenderer spriteRenderer;
-    private Color colorOriginal;
+    private SpriteRenderer _spriteRenderer;
+    private Color _colorOriginal;
+    private Rigidbody2D _rb;
 
     private void Start()
     {
         // 1. Velocidad inicial en X
-        velocidadActual = new Vector2(velocidadHorizontal, 0f);
+        velocidadActual = new Vector2(0f, 0f);
 
         // 2. Buscar al jugador (por etiqueta "Player")
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
-            player = playerObj.transform;
+            _player = playerObj.transform;
 
         // 3. Guardar referencia al SpriteRenderer y su color original
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-            colorOriginal = spriteRenderer.color;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (_spriteRenderer != null)
+            _colorOriginal = _spriteRenderer.color;
+        
+        // 4. Guardar referencia al Rigidbody2D
+        _rb = GetComponent<Rigidbody2D>();
 
-        // 4. Iniciar la rutina que alterna color y garras cada X segundos
+        // 5. Iniciar la rutina que alterna color y garras cada X segundos
         StartCoroutine(ToggleGarrasColorRoutine());
     }
 
     private void Update()
     {
         MoverEnemigo();
-        MantenerDentroDeCamaraConRebote();
+        // MantenerDentroDeCamaraConRebote(); // No es necesario ya que la cámara sigue al jugador
     }
 
     /// <summary>
@@ -61,21 +59,16 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void MoverEnemigo()
     {
-        // Perseguir al jugador en Y
-        if (player != null)
-        {
-            // Calcular la diferencia en Y respecto al jugador
-            float diferenciaY = player.position.y - transform.position.y;
+        if (!_player) return;
+        
+        // Calculamos la dirección hacia el jugador
+        Vector2 direction = (_player.transform.position - transform.position).normalized;
 
-            // Limitamos la velocidad vertical para que no sea excesivamente agresivo
-            float velocidadDeseadaY = Mathf.Clamp(diferenciaY, -velocidadVerticalMax, velocidadVerticalMax);
+        // Calculamos la nueva posición
+        Vector2 newPosition = _rb.position + direction * (velocidad * Time.fixedDeltaTime);
 
-            // Suavizamos la transición entre la velocidadActual.y y la deseada
-            velocidadActual.y = Mathf.Lerp(velocidadActual.y, velocidadDeseadaY, Time.deltaTime * suavizadoVertical);
-        }
-
-        // Aplicamos la traslación (x, y) con la velocidad actual
-        transform.Translate(velocidadActual * Time.deltaTime);
+        // Movemos al enemigo usando Rigidbody2D.MovePosition
+        _rb.MovePosition(newPosition);
     }
 
     /// <summary>
@@ -119,9 +112,9 @@ public class Enemy : MonoBehaviour
             // Si estaba en false, activamos garras y color rojo
             // Si estaba en true, desactivamos garras y ponemos color original
             garras = !garras;
-            if (spriteRenderer != null)
+            if (_spriteRenderer != null)
             {
-                spriteRenderer.color = garras ? Color.red : colorOriginal;
+                _spriteRenderer.color = garras ? Color.red : _colorOriginal;
             }
         }
     }
@@ -145,12 +138,11 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                // Si la fuerza es menor y este enemigo tiene garras, mata al jugador
+                // Si la fuerza es menor y este enemigo tiene garras, daña al jugador
                 if (garras)
                 {
-                    playerController.KillPlayer();
-                    GameManager.Instance.GameOver();
-                    Debug.Log("¡El enemigo tiene garras y mata al jugador!");
+                    playerController.TakeDamage();
+                    Debug.Log("¡El enemigo tiene garras y daña al jugador!");
                 }
             }
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text scoreUI;
     public TMP_Text livesUI;
     public TMP_Text timeUI;
+    [FormerlySerializedAs("impulseStatusUI")] public TMP_Text fuelAmountUI;
     public GameObject gameOverPanel;
 
     [Header("Textos por defecto en la UI")]
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     public string scoreTxt;
     public string livesTxt;
     public string timeTxt;
+    public string fuelAmountTxt;
 
 
     private int initialLives = 3;
@@ -67,8 +70,16 @@ public class GameManager : MonoBehaviour
     {
         scoreGral++;
     }
-
-
+    
+    public void UpdateLives(int lives)
+    {
+        livesUI.text = livesTxt + lives.ToString();
+    }
+    
+    public void UpdateFuelAmount(float amount)
+    {
+        fuelAmountUI.text = fuelAmountTxt + amount.ToString("f0");
+    }
 
     public void GameOver()
     {
