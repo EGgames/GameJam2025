@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 704604982}
+  - {fileID: 7435835199261187314, guid: 3476175654883844a84a50a681b7f914, type: 3}
   spawnInterval: 2
   canSpawn: 1
 --- !u!4 &210935695
@@ -311,10 +311,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc9fe5f3a2d0432b9a02c9782aba5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 3
+  health: 3
   maxForce: 100
   chargeRate: 100
   slowDownTime: 1
+  maxFuel: 100
+  fuelConsumptionRate: 10
+  fuelRechargeRate: 5
   moveSpeed: 5
   wasdAcceleration: 15
   wasdFriction: 5
@@ -669,10 +672,12 @@ MonoBehaviour:
   scoreUI: {fileID: 1642555226}
   livesUI: {fileID: 1580401304}
   timeUI: {fileID: 1069956752}
+  fuelAmountUI: {fileID: 0}
   gameOverPanel: {fileID: 320106333}
   scoreTxt: 'Score: '
   livesTxt: 'Lives: '
   timeTxt: 'Time: '
+  fuelAmountTxt: 
   scoreGral: 0
 --- !u!4 &652232607
 Transform:
@@ -750,9 +755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   garras: 0
   fuerzaDestruccion: 5
-  velocidadHorizontal: 5
-  velocidadVerticalMax: 2
-  suavizadoVertical: 2
+  velocidad: -5
   intervaloCambiarGarras: 2
 --- !u!212 &704604985
 SpriteRenderer:
