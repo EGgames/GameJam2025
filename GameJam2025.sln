@@ -135,6 +135,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.2D.Common.Runtime", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.2D.PixelPerfect", "Unity.2D.PixelPerfect.csproj", "{CA73C328-B9BB-DC87-C22E-30BF7E374B80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{6C14E1F0-470D-1F2B-7272-5363AB683B32}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Rendering.LightTransport.Editor", "Unity.Rendering.LightTransport.Editor.csproj", "{5DCBDE95-F4B1-C19F-6699-3CE83874CD36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.RenderPipelines.Universal.Shaders", "Unity.RenderPipelines.Universal.Shaders.csproj", "{538F0972-FC64-4B4F-7711-CE5227E465D5}"
@@ -427,6 +429,10 @@ Global
 		{CA73C328-B9BB-DC87-C22E-30BF7E374B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA73C328-B9BB-DC87-C22E-30BF7E374B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA73C328-B9BB-DC87-C22E-30BF7E374B80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C14E1F0-470D-1F2B-7272-5363AB683B32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C14E1F0-470D-1F2B-7272-5363AB683B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C14E1F0-470D-1F2B-7272-5363AB683B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C14E1F0-470D-1F2B-7272-5363AB683B32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DCBDE95-F4B1-C19F-6699-3CE83874CD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DCBDE95-F4B1-C19F-6699-3CE83874CD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCBDE95-F4B1-C19F-6699-3CE83874CD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
