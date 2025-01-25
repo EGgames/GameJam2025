@@ -6,10 +6,8 @@ public class Enemy : MonoBehaviour
     [Header("Atributos del enemigo")]
     [Tooltip("Si está en true, el enemigo mata al jugador en una colisión si esta no lo destruye antes.")]
     public bool garras = false;
-
-    [Header("Parámetros de destrucción por choque")]
-    [Tooltip("Fuerza mínima de colisión para destruir al enemigo.")]
-    public float fuerzaDestruccion = 5f;
+    [Tooltip("Referencia al objeto con el collider de ataque")]
+    public GameObject _attackColliderObj;
 
     [Header("Movimiento / Persecución")]
     [Tooltip("Velocidad base del enemigo")]
@@ -112,7 +110,8 @@ public class Enemy : MonoBehaviour
             // Si estaba en false, activamos garras y color rojo
             // Si estaba en true, desactivamos garras y ponemos color original
             garras = !garras;
-            if (_spriteRenderer != null)
+            _attackColliderObj.SetActive(garras);
+            if (_spriteRenderer)
             {
                 _spriteRenderer.color = garras ? Color.red : _colorOriginal;
             }
@@ -122,26 +121,15 @@ public class Enemy : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Verificamos que el objeto que choca tenga la etiqueta "Player"
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            // Accedemos al script de control del jugador
-            PlayerController playerController = collision.gameObject.GetOrAddComponent<PlayerController>();
+        if (!collision.gameObject.CompareTag("Player")) return;
+        
+        // Accedemos al script de control del jugador
+        PlayerController playerController = collision.gameObject.GetOrAddComponent<PlayerController>();
 
-            // Si el jugador está en modo dash, destruimos al enemigo
-            if (playerController.isDashing)
-            {
-                GameManager.Instance.ScoreCount(); // Contamos el score aqui
-                Destroy(gameObject);
-            }
-            else
-            {
-                // Si la fuerza es menor y este enemigo tiene garras, daña al jugador
-                if (garras)
-                {
-                    playerController.TakeDamage();
-                    Debug.Log("¡El enemigo tiene garras y daña al jugador!");
-                }
-            }
-        }
+        // Si el jugador está en modo dash, destruimos al enemigo
+        if (!playerController.isDashing) return;
+        
+        GameManager.Instance.ScoreCount(); // Contamos el score aqui
+        Destroy(gameObject);
     }
 }
