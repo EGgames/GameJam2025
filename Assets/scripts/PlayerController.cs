@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
 
         // Asignar la dirección y velocidad al proyectil
-        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        ProjectilePlayer projectileScript = projectile.GetComponent<ProjectilePlayer>();
         if (projectileScript != null)
         {
             projectileScript.SetDirection(direction, projectileSpeed);

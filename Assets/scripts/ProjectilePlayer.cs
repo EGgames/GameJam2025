@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class ProjectilePlayer : MonoBehaviour
 {
     private Vector2 direction;
     private float speed;
