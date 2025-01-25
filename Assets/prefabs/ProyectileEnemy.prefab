@@ -105,6 +105,10 @@ MonoBehaviour:
   shootIntervalSecs: 3
   proyectilePrefab: {fileID: 4469056592101994726, guid: 652a2cf89dce60e4db76fc28a83a17ea, type: 3}
   target: {fileID: 0}
+  moveSpeed: 5
+  targetMaxDistance: 7
+  targetMinDistance: 3
+  smoothFactor: 0.1
 --- !u!60 &-619518173069144093
 PolygonCollider2D:
   m_ObjectHideFlags: 0
