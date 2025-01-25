@@ -36,9 +36,12 @@ public class ProyectileEnemy : MonoBehaviour
 
     private void Update()
     {
-        TickShotInterval();
-        TickAim();
-        TickKeepDistanceToTarget();
+        if(target != null)
+        {
+            TickShotInterval();
+            TickAim();
+            TickKeepDistanceToTarget();
+        }
     }
 
     private void TickKeepDistanceToTarget()
