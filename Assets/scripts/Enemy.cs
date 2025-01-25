@@ -1,98 +1,73 @@
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Atributos del enemigo")]
-    [Tooltip("Si está en true, el enemigo mata al jugador en una colisión si esta no lo destruye antes.")]
+    [Header("Atributos del Enemigo")]
+    [Tooltip("Vida del enemigo.")]
+    public int health = 1; // Establece a 1 para que muera con un solo disparo
+
+    [Tooltip("Si está en true, el enemigo mata al jugador en una colisión si este no lo destruye antes.")]
     public bool garras = false;
+
     [Tooltip("Referencia al objeto con el collider de ataque")]
     public GameObject _attackColliderObj;
 
     [Header("Movimiento / Persecución")]
     [Tooltip("Velocidad base del enemigo")]
-    public float velocidad = -5f;
+    public float velocidad = 5f;
 
     [Header("Alternancia de color y garras")]
     [Tooltip("Cada cuántos segundos alterna entre garras activas/rojas y garras inactivas/color original.")]
     public float intervaloCambiarGarras = 2f;
 
+    [Tooltip("Efecto visual al morir (opcional).")]
+    public GameObject deathEffect;
+
     // Referencias internas
     private Transform _player;          // Para perseguir al jugador
-    private Vector2 velocidadActual;   // Velocidad (x, y) actual del enemigo
     private SpriteRenderer _spriteRenderer;
     private Color _colorOriginal;
     private Rigidbody2D _rb;
 
     private void Start()
     {
-        // 1. Velocidad inicial en X
-        velocidadActual = new Vector2(0f, 0f);
-
-        // 2. Buscar al jugador (por etiqueta "Player")
+        // Buscar al jugador (por etiqueta "Player")
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             _player = playerObj.transform;
 
-        // 3. Guardar referencia al SpriteRenderer y su color original
+        // Guardar referencia al SpriteRenderer y su color original
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer != null)
             _colorOriginal = _spriteRenderer.color;
-        
-        // 4. Guardar referencia al Rigidbody2D
+
+        // Guardar referencia al Rigidbody2D
         _rb = GetComponent<Rigidbody2D>();
 
-        // 5. Iniciar la rutina que alterna color y garras cada X segundos
+        // Iniciar la rutina que alterna color y garras cada X segundos
         StartCoroutine(ToggleGarrasColorRoutine());
     }
 
     private void Update()
     {
         MoverEnemigo();
-        // MantenerDentroDeCamaraConRebote(); // No es necesario ya que la cámara sigue al jugador
     }
 
     /// <summary>
-    /// Mueve al enemigo: rebote horizontal y persecución vertical suave.
+    /// Mueve al enemigo hacia el jugador.
     /// </summary>
     private void MoverEnemigo()
     {
         if (!_player) return;
-        
+
         // Calculamos la dirección hacia el jugador
-        Vector2 direction = (_player.transform.position - transform.position).normalized;
+        Vector2 direction = (_player.position - transform.position).normalized;
 
         // Calculamos la nueva posición
-        Vector2 newPosition = _rb.position + direction * (velocidad * Time.fixedDeltaTime);
+        Vector2 newPosition = _rb.position + direction * (velocidad * Time.deltaTime);
 
         // Movemos al enemigo usando Rigidbody2D.MovePosition
         _rb.MovePosition(newPosition);
-    }
-
-    /// <summary>
-    /// Evita que el enemigo salga de los límites de la cámara rebotando en los bordes.
-    /// </summary>
-    private void MantenerDentroDeCamaraConRebote()
-    {
-        // Convertimos la posición del enemigo a coordenadas de viewport (0..1 dentro de la cámara).
-        Vector3 posViewport = Camera.main.WorldToViewportPoint(transform.position);
-
-        // Rebotar en X si toca el borde izquierdo (x < 0) o derecho (x > 1)
-        if (posViewport.x <= 0f || posViewport.x >= 1f)
-        {
-            velocidadActual.x *= -1f;
-            posViewport.x = Mathf.Clamp(posViewport.x, 0f, 1f);
-        }
-
-        // Rebotar en Y si toca el borde inferior (y < 0) o superior (y > 1)
-        if (posViewport.y <= 0f || posViewport.y >= 1f)
-        {
-            velocidadActual.y *= -1f;
-            posViewport.y = Mathf.Clamp(posViewport.y, 0f, 1f);
-        }
-
-        // Actualizamos la posición en coordenadas de mundo
-        transform.position = Camera.main.ViewportToWorldPoint(posViewport);
     }
 
     /// <summary>
@@ -107,8 +82,7 @@ public class Enemy : MonoBehaviour
             // Esperamos X segundos antes de cambiar de estado
             yield return new WaitForSeconds(intervaloCambiarGarras);
 
-            // Si estaba en false, activamos garras y color rojo
-            // Si estaba en true, desactivamos garras y ponemos color original
+            // Alternamos el estado de garras
             garras = !garras;
             _attackColliderObj.SetActive(garras);
             if (_spriteRenderer)
@@ -120,16 +94,55 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Verificamos que el objeto que choca tenga la etiqueta "Player"
-        if (!collision.gameObject.CompareTag("Player")) return;
-        
-        // Accedemos al script de control del jugador
-        PlayerController playerController = collision.gameObject.GetOrAddComponent<PlayerController>();
+        // Verificamos si el objeto colisionado es el jugador
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Obtener el script del jugador
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                if (!playerController.isDashing)
+                {
+                    // Aplicar daño al jugador
+                    playerController.TakeDamage(1); // Ajusta la cantidad de daño según sea necesario
+                }
+                else
+                {
+                    // Si el jugador está en modo dash, destruir al enemigo y aumentar el score
+                    GameManager.Instance.ScoreCount(); // Contar el score aquí
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
 
-        // Si el jugador está en modo dash, destruimos al enemigo
-        if (!playerController.isDashing) return;
-        
-        GameManager.Instance.ScoreCount(); // Contamos el score aqui
+    /// <summary>
+    /// Método para aplicar daño al enemigo.
+    /// </summary>
+    /// <param name="damage">Cantidad de daño a aplicar.</param>
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log($"{gameObject.name} recibió {damage} daño. Salud restante: {health}");
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    /// <summary>
+    /// Método que se llama cuando el enemigo muere.
+    /// </summary>
+    private void Die()
+    {
+        // Opcional: Instanciar un efecto visual al morir
+        if (deathEffect != null)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+        }
+
+        // Destruir el enemigo
         Destroy(gameObject);
     }
 }
