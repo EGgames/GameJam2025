@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("Vida del jugador")]
     [Tooltip("Cantidad de vida que contrndra el jugador en la partida")]
     public int health;
-    
+
     [Tooltip("Tiempo de invulnerabilidad después de recibir daño.")]
     public float damageCooldown = 1f;
 
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     // --- Clamping en la cámara ---
     private float halfWidth = 0.5f;
     private float halfHeight = 0.5f;
-    
+
     private float currentDamageCooldown = 0f;
 
     // Variable para guardar cuándo se inicia el clic
@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
         impulseVelocity = Vector2.zero;
         slowDownCoroutine = null;
     }
-    
+
     private IEnumerator BeginDamageCooldown()
     {
         currentDamageCooldown = damageCooldown;
@@ -279,4 +279,22 @@ public class PlayerController : MonoBehaviour
             KillPlayer();
         }
     }
+
+    public Vector2 GetCurrentVelocity()
+    {
+        // Devuelve la suma actual que usa el Player
+        return wasdVelocity + impulseVelocity;
+    }
+
+    // Este método lo llamará Gellyfish cuando quiera cambiar la velocidad
+    public void ApplyExternalVelocity(Vector2 external)
+    {
+        // Aquí decides cómo lo integras. Por ejemplo:
+        impulseVelocity = external;
+        // O lo sumas, o lo mezclas con la velocidad que ya traías, etc.
+
+        slowDownCoroutine = StartCoroutine(SlowDownImpulse());
+
+    }
+
 }
