@@ -140,6 +140,7 @@ public class Enemy : MonoBehaviour
             // Si el choque es suficientemente fuerte, destruimos al enemigo
             if (fuerzaChoque >= fuerzaDestruccion)
             {
+                GameManager.Instance.ScoreCount(); //Contamos el score aqui
                 Destroy(gameObject);
             }
             else
@@ -148,6 +149,7 @@ public class Enemy : MonoBehaviour
                 if (garras)
                 {
                     playerController.KillPlayer();
+                    GameManager.Instance.GameOver();
                     Debug.Log("¡El enemigo tiene garras y mata al jugador!");
                 }
             }
