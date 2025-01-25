@@ -11,7 +11,43 @@ public class EnemyProyectile : MonoBehaviour
     {
         Destroy(gameObject, despawnInSecs);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Verificar si el objeto colisionado está en las capas especificadas
 
+        // Verificar si el objeto tiene el tag "Enemy"
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Obtener el script Enemy del objeto colisionado
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                //Suma un punto
+                player.TakeDamage();
+                // Aplicar daño al enemigo
+                player.TakeDamage(1); // En este caso, 1 daño es suficiente para destruir al enemigo
+            }
+            else
+            {
+                Debug.LogWarning($"El objeto {collision.gameObject.name} no tiene el script PlayerController.");
+            }
+        }
+
+        // Ignorar colisiones con el propio jugador
+        if (collision.gameObject.CompareTag("Enemy"))
+            return;
+
+        // Opcional: Instanciar un efecto visual al impactar
+        /*
+         if (hitEffect != null)
+         {
+             Instantiate(hitEffect, transform.position, Quaternion.identity);
+         }
+         */
+
+        // Destruir el proyectil tras la colisión
+        Destroy(gameObject);
+    }
     private void Update()
     {
         // Increment velocity based on acceleration and clamp to maxVelocity

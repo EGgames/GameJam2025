@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   despawnInSecs: 3
   maxVelocity: 50
-  accelerationPerSec: 5
+  accelerationPerSec: 10
 --- !u!61 &2482038279031579577
 BoxCollider2D:
   m_ObjectHideFlags: 0
