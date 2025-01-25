@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
@@ -9,11 +11,35 @@ public class Spawner : MonoBehaviour
     [Header("Parámetros de spawn")]
     [Tooltip("Intervalo de tiempo (segundos) entre cada spawn.")]
     public float spawnInterval = 2f;
+    
+    [Tooltip("Cantidad de enemigos a spawnear antes de desactivar el spawner.")]
+    public int numberOfSpawns = 3;
 
     private float timer = 0f;
+    private int spawnCount = 0;
 
     // Puedes activar/desactivar el spawner
     public bool canSpawn = true;
+
+    private void Awake()
+    {
+        if (enemyPrefabs == null || enemyPrefabs.Length == 0)
+        {
+            Debug.LogError("No hay prefabs de enemigos asignados en el Spawner.");
+            canSpawn = false;
+        }
+        
+        if (numberOfSpawns <= 0)
+        {
+            Debug.LogError("El número de spawns debe ser mayor a 0.");
+            canSpawn = false;
+        }
+
+        if (canSpawn)
+        {
+            SpawnEnemy();
+        }
+    }
 
     void Update()
     {
@@ -27,6 +53,11 @@ public class Spawner : MonoBehaviour
             timer = 0f;
             SpawnEnemy();
         }
+        
+        if (spawnCount >= numberOfSpawns)
+        {
+            canSpawn = false;
+        }
     }
 
     private void SpawnEnemy()
@@ -36,5 +67,7 @@ public class Spawner : MonoBehaviour
 
         // Instancia el enemigo en la posición del Spawner
         Instantiate(enemyPrefabs[index], transform.position, Quaternion.identity);
+        
+        spawnCount++;
     }
 }

@@ -9,15 +9,15 @@ public class PlayerController : MonoBehaviour
     [Header("Vida del jugador")]
     [Tooltip("Cantidad de vida que contrndra el jugador en la partida")]
     public int health;
-    
+
     [Tooltip("Tiempo de invulnerabilidad después de recibir daño.")]
     public float damageCooldown = 1f;
 
-    [Header("Parámetros de fuerza del impulso (clic)")]
-    [Tooltip("Fuerza máxima que puede alcanzar el impulso al soltar el clic.")]
+    [Header("Parámetros de fuerza del impulso (barra espaciadora)")]
+    [Tooltip("Fuerza máxima que puede alcanzar el impulso al soltar la barra espaciadora.")]
     public float maxForce = 10f;
 
-    [Tooltip("Velocidad a la que se acumula la fuerza mientras se mantiene el mouse presionado.")]
+    [Tooltip("Velocidad a la que se acumula la fuerza mientras se mantiene la barra espaciadora presionada.")]
     public float chargeRate = 5f;
 
     [Tooltip("Tiempo en segundos que tarda en reducir la velocidad del impulso hasta 0.")]
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Capacidad máxima de combustible.")]
     public float maxFuel = 100f;
 
-    [Tooltip("Tasa de consumo de combustible por segundo mientras mantenemos el clic.")]
+    [Tooltip("Tasa de consumo de combustible por segundo mientras mantenemos la barra espaciadora presionada.")]
     public float fuelConsumptionRate = 10f;
 
     [Tooltip("Cantidad de combustible que se recarga por segundo.")]
@@ -47,13 +47,30 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Si usas un collider, puedes tomar extents automáticamente. O asignar manualmente el medio ancho y medio alto.")]
     public bool useColliderBounds = true;
 
+    // --- Disparo de Proyectiles ---
+    [Header("Sistema de Disparo")]
+    [Tooltip("Prefab del proyectil a disparar.")]
+    public GameObject projectilePrefab;
+
+    [Tooltip("Punto desde donde se disparan los proyectiles.")]
+    public Transform firePoint;
+
+    [Tooltip("Velocidad del proyectil.")]
+    public float projectileSpeed = 20f;
+
+    [Tooltip("Tiempo entre disparos para limitar la tasa de disparo.")]
+    public float fireRate = 0.5f;
+
+    private float nextFireTime = 0f;
+
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
 
-    // --- Impulso con el mouse ---
+    // --- Impulso con la barra espaciadora ---
     private float currentForce = 0f;
     private Vector2 impulseVelocity = Vector2.zero;
     private Coroutine slowDownCoroutine;
+    public bool isDashing;
 
     // --- Sistema de combustible ---
     private float currentFuel;
@@ -64,11 +81,14 @@ public class PlayerController : MonoBehaviour
     // --- Clamping en la cámara ---
     private float halfWidth = 0.5f;
     private float halfHeight = 0.5f;
-    
+
     private float currentDamageCooldown = 0f;
 
-    // Variable para guardar cuándo se inicia el clic
+    // Variable para guardar cuándo se inicia la barra espaciadora
     private float pressStartTime;
+
+    // Variable para almacenar la última dirección de movimiento
+    private Vector2 lastMoveDirection = Vector2.up; // Dirección predeterminada
 
     void Start()
     {
@@ -95,6 +115,8 @@ public class PlayerController : MonoBehaviour
 
         // Actualizar la UI del combustible
         GameManager.Instance.UpdateFuelAmount(currentFuel);
+        // Manejar el disparo de proyectiles
+        HandleShooting();
     }
 
     void FixedUpdate()
@@ -106,9 +128,11 @@ public class PlayerController : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
         Vector2 input = new Vector2(x, y).normalized;
 
-        // 2. Si hay input, aceleramos hacia la velocidad deseada
         if (input.magnitude > 0.01f)
         {
+            // Guardar la última dirección de movimiento
+            lastMoveDirection = input;
+
             // Añadimos aceleración en la dirección del input
             wasdVelocity += input * (wasdAcceleration * Time.fixedDeltaTime);
 
@@ -127,30 +151,75 @@ public class PlayerController : MonoBehaviour
             // Reducimos la magnitud de la velocidad poco a poco
             speed = Mathf.Max(0f, speed - decrease);
 
-            // Mantener la dirección, pero con menor magnitud
-            wasdVelocity = wasdVelocity.normalized * speed;
+            if (speed > 0f)
+            {
+                wasdVelocity = wasdVelocity.normalized * speed;
+            }
+            else
+            {
+                wasdVelocity = Vector2.zero;
+            }
         }
 
-        // 4. Sumar la velocidad de WASD + el impulso (clic)
+        // 4. Sumar la velocidad de WASD + el impulso (barra espaciadora)
         rb2D.linearVelocity = wasdVelocity + impulseVelocity;
     }
+
+    private void HandleShooting()
+    {
+        // Verificar si se ha presionado el botón izquierdo del mouse y si el tiempo actual es mayor que nextFireTime
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
+        {
+            ShootProjectile();
+            nextFireTime = Time.time + fireRate;
+        }
+    }
+
+
+    private void ShootProjectile()
+    {
+        if (projectilePrefab == null || firePoint == null)
+        {
+            Debug.LogWarning("Prefab del proyectil o FirePoint no están asignados en el PlayerController.");
+            return;
+        }
+
+        // Instanciar el proyectil en la posición del firePoint
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+
+        // Obtener la posición del mouse en el mundo
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+
+        // Asignar la dirección y velocidad al proyectil
+        ProjectilePlayer projectileScript = projectile.GetComponent<ProjectilePlayer>();
+        if (projectileScript != null)
+        {
+            projectileScript.SetDirection(direction, projectileSpeed);
+        }
+        else
+        {
+            Debug.LogWarning("El prefab del proyectil no tiene el script 'Projectile' asignado.");
+        }
+    }
+
 
     private void ChargeImpulse()
     {
         // Si no hay suficiente combustible, no permitir cargar el impulso
         if (currentFuel <= 0f) return;
 
-        // ========== Impulso con el mouse ==========
-        if (Input.GetMouseButtonDown(0))
+        // ========== Impulso con la barra espaciadora ==========
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Registramos el momento en que se inició el clic
+            // Registramos el momento en que se inició la barra espaciadora
             pressStartTime = Time.time;
             currentForce = 0f;
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.Space))
         {
-            // Acumulamos fuerza mientras se mantiene el botón
+            // Acumulamos fuerza mientras se mantiene la barra espaciadora
             currentForce += chargeRate * Time.deltaTime;
 
             // Fuerza máxima depende del combustible disponible
@@ -158,19 +227,29 @@ public class PlayerController : MonoBehaviour
             currentForce = Mathf.Clamp(currentForce, 0f, finalMaxForce);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            // Al soltar, aplicamos una "velocidad" de impulso
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mouseWorldPos - transform.position).normalized;
+            // Definir la dirección del impulso basado en la última dirección de movimiento
+            Vector2 direction = lastMoveDirection;
+
+            // Si el jugador no se está moviendo, define una dirección por defecto
+            if (direction == Vector2.zero)
+            {
+                direction = Vector2.up; // Por ejemplo, hacia arriba
+            }
+
+            // Aplicamos una "velocidad" de impulso
             impulseVelocity = direction * currentForce;
 
-            // Calcular la duración del clic
+            // Calcular la duración de la barra espaciadora presionada
             float pressDuration = Time.time - pressStartTime;
-            // El consumo de combustible es proporcional al tiempo presionado, con un tope máximo de 10
+            // El consumo de combustible es proporcional al tiempo presionado, con un tope máximo de fuelConsumptionRate
             float fuelToConsume = Mathf.Min(pressDuration * fuelConsumptionRate, fuelConsumptionRate);
             // Consumir combustible
             currentFuel = Mathf.Max(0f, currentFuel - fuelToConsume);
+
+            // Activamos el dash
+            isDashing = true;
 
             // Iniciamos la corrutina que frena el impulso poco a poco
             slowDownCoroutine = StartCoroutine(SlowDownImpulse());
@@ -180,7 +259,7 @@ public class PlayerController : MonoBehaviour
     private void RechargeFuel()
     {
         // Recargar combustible si no estamos cargando el impulso y ya no hay velocidad residual de impulso
-        if (!Input.GetMouseButton(0) && impulseVelocity == Vector2.zero)
+        if (!Input.GetKey(KeyCode.Space) && impulseVelocity == Vector2.zero)
         {
             currentFuel = Mathf.Min(maxFuel, currentFuel + fuelRechargeRate * Time.deltaTime);
         }
@@ -207,8 +286,9 @@ public class PlayerController : MonoBehaviour
 
         impulseVelocity = Vector2.zero;
         slowDownCoroutine = null;
+        isDashing = false;
     }
-    
+
     private IEnumerator BeginDamageCooldown()
     {
         currentDamageCooldown = damageCooldown;
@@ -278,5 +358,26 @@ public class PlayerController : MonoBehaviour
         {
             KillPlayer();
         }
+    }
+
+    public Vector2 GetCurrentVelocity()
+    {
+        // Devuelve la suma actual que usa el Player
+        return wasdVelocity + impulseVelocity;
+    }
+
+    // Este método lo llamará Gellyfish cuando quiera cambiar la velocidad
+    public void ApplyExternalVelocity(Vector2 external)
+    {
+        // Aquí decides cómo lo integras. Por ejemplo:
+        impulseVelocity = external;
+        // O lo sumas, o lo mezclas con la velocidad que ya traías, etc.
+
+        // Iniciamos la corrutina de frenado
+        if (slowDownCoroutine != null)
+        {
+            StopCoroutine(slowDownCoroutine);
+        }
+        slowDownCoroutine = StartCoroutine(SlowDownImpulse());
     }
 }
