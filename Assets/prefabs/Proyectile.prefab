@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2482038279031579577}
   m_Layer: 0
   m_Name: Proyectile
-  m_TagString: Untagged
+  m_TagString: Proyectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c688c0f2264a904e8af96f538bb0a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  despawnInSecs: 3
   maxVelocity: 50
   accelerationPerSec: 5
 --- !u!61 &2482038279031579577
@@ -133,7 +134,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

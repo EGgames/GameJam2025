@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class Proyectile : MonoBehaviour
 {
+    public float despawnInSecs;
     public float maxVelocity;
     public float accelerationPerSec;
     private float velocity = 0;
+
+    private void Start()
+    {
+        Destroy(gameObject, despawnInSecs);
+    }
 
     private void Update()
     {
