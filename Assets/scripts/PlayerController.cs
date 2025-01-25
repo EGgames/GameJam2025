@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private float currentForce = 0f;
     private Vector2 impulseVelocity = Vector2.zero;
     private Coroutine slowDownCoroutine;
+    public bool isDashing;
 
     // --- Sistema de combustible ---
     private float currentFuel;
@@ -172,6 +173,9 @@ public class PlayerController : MonoBehaviour
             // Consumir combustible
             currentFuel = Mathf.Max(0f, currentFuel - fuelToConsume);
 
+            // Activamos el dash
+            isDashing = true;
+            
             // Iniciamos la corrutina que frena el impulso poco a poco
             slowDownCoroutine = StartCoroutine(SlowDownImpulse());
         }
@@ -207,6 +211,7 @@ public class PlayerController : MonoBehaviour
 
         impulseVelocity = Vector2.zero;
         slowDownCoroutine = null;
+        isDashing = false;
     }
     
     private IEnumerator BeginDamageCooldown()
