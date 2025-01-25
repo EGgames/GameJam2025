@@ -105,7 +105,7 @@ MonoBehaviour:
   shootIntervalSecs: 3
   proyectilePrefab: {fileID: 4469056592101994726, guid: 652a2cf89dce60e4db76fc28a83a17ea, type: 3}
   target: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 100
   targetMaxDistance: 7
   targetMinDistance: 3
   smoothFactor: 0.1
@@ -172,8 +172,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_LinearDamping: 2
+  m_AngularDamping: 0.5
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:

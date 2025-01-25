@@ -27,8 +27,8 @@ public class ProyectileEnemy : MonoBehaviour
         collider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
 
-        // Ensure Rigidbody2D is set to Kinematic so we can control velocity directly
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        // Ensure Rigidbody2D is set to Dynamic so it behaves as a physics object
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 
     private void Update()
@@ -63,7 +63,12 @@ public class ProyectileEnemy : MonoBehaviour
         }
 
         // Apply smooth physics-based movement using velocity
-        rb.velocity = Vector2.Lerp(rb.velocity, desiredVelocity, smoothFactor);
+        // Instead of setting the velocity directly, we add a force to the Rigidbody2D
+        Vector2 velocityDifference = desiredVelocity - rb.velocity;
+        Vector2 forceToApply = velocityDifference * smoothFactor;
+
+        // Apply the force to the Rigidbody2D to move it dynamically
+        rb.AddForce(forceToApply);
     }
 
     private void TickShotInterval()
@@ -81,7 +86,7 @@ public class ProyectileEnemy : MonoBehaviour
         Vector2 targetPosition = target.transform.position;
         Vector2 direction = targetPosition - (Vector2)transform.position;
         //-90 is used to use transform.up as the front of the enemy
-        float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) -90;
+        float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
