@@ -6928,7 +6928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1180341996
 Transform:
   m_ObjectHideFlags: 0
@@ -6968,13 +6968,13 @@ MonoBehaviour:
     - {fileID: 831404964}
     - {fileID: 1360888077}
     - {fileID: 973451561}
-    musicSnapshot: {fileID: 0}
+    musicSnapshot: {fileID: 24500006, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
   - spawners:
     - {fileID: 1740541837}
     - {fileID: 1737984716}
     - {fileID: 1967424400}
     - {fileID: 555210528}
-    musicSnapshot: {fileID: 0}
+    musicSnapshot: {fileID: -4705070050781136925, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
   - spawners:
     - {fileID: 1772891986}
     - {fileID: 562479813}
@@ -6982,7 +6982,7 @@ MonoBehaviour:
     - {fileID: 1735821558}
     - {fileID: 314268474}
     - {fileID: 718837342}
-    musicSnapshot: {fileID: 0}
+    musicSnapshot: {fileID: 6697542450418895821, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
   - spawners:
     - {fileID: 1785981284}
     - {fileID: 721582895}
@@ -6991,7 +6991,7 @@ MonoBehaviour:
     - {fileID: 101250842}
     - {fileID: 304223854}
     - {fileID: 736531009}
-    musicSnapshot: {fileID: 0}
+    musicSnapshot: {fileID: 8768155976864008116, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
   - spawners:
     - {fileID: 1024800111}
     - {fileID: 1495014446}
@@ -7005,7 +7005,7 @@ MonoBehaviour:
     - {fileID: 949409888}
     - {fileID: 708728109}
     - {fileID: 258881854}
-    musicSnapshot: {fileID: 0}
+    musicSnapshot: {fileID: 1463850583723999993, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
 --- !u!1 &1192095623
 GameObject:
   m_ObjectHideFlags: 0
