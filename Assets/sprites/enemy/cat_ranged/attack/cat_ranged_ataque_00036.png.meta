@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cat_ranged_ataque_00036_0: 1447360018152968319
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

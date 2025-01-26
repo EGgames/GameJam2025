@@ -28,7 +28,6 @@ public class ProyectileEnemy : Enemy
     {
         if (!_player) return;
         TickShotInterval();
-        TickAim();
     }
 
     protected override void MoverEnemigo()
@@ -69,18 +68,18 @@ public class ProyectileEnemy : Enemy
         }
     }
 
-    private void TickAim()
+    private Quaternion GetRotationToTarget()
     {
         Vector2 targetPosition = _player.position;
         Vector2 direction = targetPosition - (Vector2)transform.position;
         //-90 is used to use transform.up as the front of the enemy
         float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        return Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     public void Shoot()
     {
         Debug.Log($"'{gameObject.name}' has shot!");
-        Instantiate(proyectilePrefab, transform.position, transform.rotation);
+        Instantiate(proyectilePrefab, transform.position, GetRotationToTarget());
     }
 }

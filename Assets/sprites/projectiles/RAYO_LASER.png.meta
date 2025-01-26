@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      RAYO_LASER_0: 3330624846239773811
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

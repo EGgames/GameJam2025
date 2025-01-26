@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      axolote_1_0: 1297915107634310968
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
