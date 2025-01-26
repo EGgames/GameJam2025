@@ -11,7 +11,7 @@ public class LoadingScreenManager : MonoBehaviour
     void Start()
     {
         // Inicia la carga del juego automáticamente
-        StartCoroutine(LoadSceneAsync("Yuri"));
+        StartCoroutine(LoadSceneAsync("Game"));
     }
 
     private IEnumerator LoadSceneAsync(string sceneName)

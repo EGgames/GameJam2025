@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: ac9c3c03da15c4b9a8e1b1906f876803
   - enabled: 1
-    path: Assets/Scenes/Testing/Yuri.unity
-    guid: 1952f56e90c25bc469568ac1e4e8c0f5
+    path: Assets/Scenes/game.unity
+    guid: 8fe0ac9a8490f4a9b819985a20349680
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
