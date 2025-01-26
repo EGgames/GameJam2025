@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Menu_INICIO_GATOS_GALACTICOS_BURBUJAS_0: -2762124137799884155
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
