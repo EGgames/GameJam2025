@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(ToggleGarrasColorRoutine());
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         MoverEnemigo();
     }

@@ -80,8 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 1169637791
   m_SortingLayer: 5
   m_SortingOrder: 40
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224,
-    type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -107,7 +106,7 @@ MonoBehaviour:
   health: 1
   garras: 0
   _attackColliderObj: {fileID: 8151105110069726153}
-  velocidad: 15
+  velocidad: 4
   intervaloCambiarGarras: 2
   deathEffect: {fileID: 0}
 --- !u!50 &275362805740870673
@@ -297,8 +296,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
-    type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 0.16862746}
   m_FlipX: 0
   m_FlipY: 0
