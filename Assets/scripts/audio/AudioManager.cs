@@ -9,7 +9,23 @@ public class AudioManager : MonoBehaviour
    [SerializeField] AudioSource musicWave4;
    [SerializeField] AudioSource musicWave5;
 
-   [SerializeField] 
+   [Header("------ SFX ------")]
+
+   // player
+   [SerializeField] AudioSource plyr_bubba_shot;
+   [SerializeField] AudioSource plyr_dash;
+   [SerializeField] AudioSource plyr_damage_1;
+   [SerializeField] AudioSource plyr_death;
+   [SerializeField] AudioSource catship_melee_1;
+   [SerializeField] AudioSource catship_melee_2;
+   [SerializeField] AudioSource catship_range;
+   [SerializeField] AudioSource catship_death_1;
+   [SerializeField] AudioSource catship_death_2;
+   [SerializeField] AudioSource catship_death_3;
+   [SerializeField] AudioSource jelly_bounce;
+   
+
+   
 
     private void Start() 
     {

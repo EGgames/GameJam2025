@@ -3841,6 +3841,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 571493844}
   m_CullTransparentMesh: 1
+--- !u!1 &574008795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 574008796}
+  m_Layer: 0
+  m_Name: SFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &574008796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574008795}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1009457560}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &585199671
 GameObject:
   m_ObjectHideFlags: 0
@@ -5807,6 +5838,17 @@ MonoBehaviour:
   musicWave3: {fileID: 124466096}
   musicWave4: {fileID: 1069183382}
   musicWave5: {fileID: 988965035}
+  plyr_bubba_shot: {fileID: 0}
+  plyr_dash: {fileID: 0}
+  plyr_damage_1: {fileID: 0}
+  plyr_death: {fileID: 0}
+  catship_melee_1: {fileID: 0}
+  catship_melee_2: {fileID: 0}
+  catship_range: {fileID: 0}
+  catship_death_1: {fileID: 0}
+  catship_death_2: {fileID: 0}
+  catship_death_3: {fileID: 0}
+  jelly_bounce: {fileID: 0}
 --- !u!4 &1009457560
 Transform:
   m_ObjectHideFlags: 0
@@ -5821,6 +5863,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 640419988}
+  - {fileID: 574008796}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1024800109

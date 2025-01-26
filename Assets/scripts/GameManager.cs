@@ -9,13 +9,13 @@ public class GameManager : MonoBehaviour
 
     //Inicializamos instancia Singleton
     public static GameManager Instance;
-    
+
     [Header("Configuración del juego")]
     [Tooltip("Duración del juego en segundos")]
     public float gameDuration = 300f;
     [Tooltip(("Referencia al jugador"))]
     public PlayerController player;
-    
+
     [Header("Referencias a Elementos de la interfaz gráfica")]
     [Tooltip("Barra de vida")]
     public Slider healthBarFill;
@@ -24,13 +24,14 @@ public class GameManager : MonoBehaviour
 
     public SpriteRenderer dashIndicator;
     public GameObject gameOverPanel;
-    
+    public GameObject pausePanel;
+
     private float currentTime = 0;
 
     [Header("Puntaje general")]
     [Tooltip("Se administra con esta variable")]
     public int scoreGral;
-    
+
     void Awake()
     {
         //Seteamos velocidad del juego por tiempo de ejecucion
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
 
         //Ocultamos GameOverPanel
         gameOverPanel.SetActive(false);
+
+        pausePanel.SetActive(false);
         //Inicia con contadores por defecto
 
         // Configura el Singleton
@@ -66,13 +69,13 @@ public class GameManager : MonoBehaviour
     {
         scoreGral++;
     }
-    
+
     public void UpdateHealthUI(int newHealth)
     {
         float fillAmount = (float)newHealth / player.maxHealth;
         healthBarFill.value = fillAmount;
     }
-    
+
     public void UpdateDashIndicator(bool isReady)
     {
         dashIndicator.color = new Color(1, 1, 1, isReady ? 1 : 0.1f);
