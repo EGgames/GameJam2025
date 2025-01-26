@@ -57,6 +57,9 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("Tiempo entre disparos para limitar la tasa de disparo.")]
     public float fireRate = 0.5f;
+    
+    [Tooltip("Referencia al objeto usado para rotar el sprite del jugador.")]
+    public GameObject spriteRotator;
 
     private float nextFireTime;
 
@@ -66,7 +69,7 @@ public class PlayerController : MonoBehaviour
     private int currentHealth;
 
     // --- Impulso con la barra espaciadora ---
-    private float currentForce = 0f;
+    // private float currentForce = 0f;
     private Vector2 impulseVelocity = Vector2.zero;
     private Coroutine slowDownCoroutine;
     public bool isDashing;
@@ -105,11 +108,11 @@ public class PlayerController : MonoBehaviour
         // Actualizar la UI del combustible
         GameManager.Instance.UpdateDashIndicator(Mathf.Approximately(currentFuel, maxFuel));
         
-        // Mover firePoint al rededor del jugador con el mouse
+        // rotar el sprite del jugador hacia la posición del mouse, rotación inicial hacia arriba
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = (mousePos - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x);
-        firePoint.position = transform.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 0.5f;
+        Vector2 lookDir = mousePos - transform.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        spriteRotator.transform.rotation = Quaternion.Euler(0, 0, angle);
         
         // Manejar el disparo de proyectiles
         HandleShooting();

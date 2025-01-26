@@ -48,10 +48,11 @@ public class MeleeEnemy : Enemy
             // Alternamos el estado de garras
             garras = !garras;
             _attackColliderObj.SetActive(garras);
-            if (_spriteRenderer)
-            {
-                _spriteRenderer.color = garras ? Color.red : _colorOriginal;
-            }
+            // if (_spriteRenderer)
+            // {
+            //     _spriteRenderer.color = garras ? Color.red : _colorOriginal;
+            // }
+            _animator.SetBool("IsAttacking", garras);
         }
     }
 

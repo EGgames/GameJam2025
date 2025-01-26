@@ -9,12 +9,15 @@ public abstract class Enemy : MonoBehaviour
     [Tooltip("Velocidad base del enemigo")]
     public float moveSpeed = 5f;
 
+    [Header("Configuraciones del objeto de enemigo")]
     [Tooltip("Efecto visual al morir (opcional).")]
     public GameObject deathEffect;
+    [Tooltip("Referencia al SpriteRenderer del enemigo.")]
+    public SpriteRenderer _spriteRenderer;
 
     protected Transform _player;
-    protected SpriteRenderer _spriteRenderer;
     protected Rigidbody2D _rb;
+    protected Animator _animator;
 
     protected virtual void Start()
     {
@@ -22,9 +25,9 @@ public abstract class Enemy : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             _player = playerObj.transform;
-
-        // Guardar referencia al SpriteRenderer y su color original
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Guardar referencia al Animator
+        _animator = GetComponent<Animator>();
 
         // Guardar referencia al Rigidbody2D
         _rb = GetComponent<Rigidbody2D>();

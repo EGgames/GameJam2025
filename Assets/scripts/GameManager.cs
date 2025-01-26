@@ -25,9 +25,6 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer dashIndicator;
     public GameObject gameOverPanel;
     
-    private int initialLives = 3;
-    private int initialScore = 0;
-    private int initialTime = 0;
     private float currentTime = 0;
 
     [Header("Puntaje general")]
