@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Texto de tiempo")]
     public TMP_Text timeUI;
 
-    // public Image dashIndicator;
+    public SpriteRenderer dashIndicator;
     public GameObject gameOverPanel;
     
     private int initialLives = 3;
@@ -76,10 +76,10 @@ public class GameManager : MonoBehaviour
         healthBarFill.value = fillAmount;
     }
     
-    // public void UpdateDashIndicator(bool isReady)
-    // {
-    //     dashIndicator.color = new Color(1, 1, 1, isReady ? 1 : 0.5f);
-    // }
+    public void UpdateDashIndicator(bool isReady)
+    {
+        dashIndicator.color = new Color(1, 1, 1, isReady ? 1 : 0.1f);
+    }
 
     public void GameOver()
     {

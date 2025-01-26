@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         RechargeFuel();
 
         // Actualizar la UI del combustible
-        // GameManager.Instance.UpdateDashIndicator(Mathf.Approximately(currentFuel, maxFuel));
+        GameManager.Instance.UpdateDashIndicator(Mathf.Approximately(currentFuel, maxFuel));
         
         // Mover firePoint al rededor del jugador con el mouse
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
