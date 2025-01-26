@@ -70,7 +70,9 @@ public class ProjectilePlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Verificar si el objeto colisionado está en las capas especificadas
+        // Ignorar colisiones con ciertos objetos basados en etiquetas
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Projectile") || collision.gameObject.CompareTag("Jellyfish"))
+            return;
 
         // Verificar si el objeto tiene el tag "Enemy"
         if (collision.gameObject.CompareTag("Enemy"))
@@ -83,16 +85,13 @@ public class ProjectilePlayer : MonoBehaviour
                 GameManager.Instance.ScoreCount();
                 // Aplicar daño al enemigo
                 enemy.TakeDamage(1); // En este caso, 1 daño es suficiente para destruir al enemigo
+                Destroy(gameObject); //Destruimos el proyectil
             }
             else
             {
                 Debug.LogWarning($"El objeto {collision.gameObject.name} no tiene el script Enemy.");
             }
         }
-
-        // Ignorar colisiones con el propio jugador
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Projectile") || collision.gameObject.CompareTag("Jellyfish"))
-            return;
 
         // Opcional: Instanciar un efecto visual al impactar
         /*
@@ -102,8 +101,6 @@ public class ProjectilePlayer : MonoBehaviour
          }
          */
 
-        // Destruir el proyectil tras la colisión
-        Destroy(gameObject);
     }
 }
 
