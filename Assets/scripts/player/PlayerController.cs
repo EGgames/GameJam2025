@@ -6,10 +6,10 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [FormerlySerializedAs("lives")]
+    [FormerlySerializedAs("health")]
     [Header("Vida del jugador")]
     [Tooltip("Cantidad de vida que contrndra el jugador en la partida")]
-    public int health;
+    public int maxHealth;
 
     [Tooltip("Tiempo de invulnerabilidad después de recibir daño.")]
     public float damageCooldown = 1f;
@@ -63,6 +63,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
 
+    private int currentHealth;
+
     // --- Impulso con la barra espaciadora ---
     private float currentForce = 0f;
     private Vector2 impulseVelocity = Vector2.zero;
@@ -91,6 +93,8 @@ public class PlayerController : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         currentFuel = maxFuel;
+        currentHealth = maxHealth;
+        GameManager.Instance.UpdateHealthUI(maxHealth);
     }
 
     void Update()
@@ -99,7 +103,7 @@ public class PlayerController : MonoBehaviour
         RechargeFuel();
 
         // Actualizar la UI del combustible
-        GameManager.Instance.UpdateFuelAmount(currentFuel);
+        // GameManager.Instance.UpdateDashIndicator(Mathf.Approximately(currentFuel, maxFuel));
         
         // Mover firePoint al rededor del jugador con el mouse
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -317,10 +321,10 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage = 1)
     {
         if (currentDamageCooldown > 0f) return;
-        health -= damage;
-        GameManager.Instance.UpdateLives(health);
+        currentHealth -= damage;
+        GameManager.Instance.UpdateHealthUI(currentHealth);
         StartCoroutine(BeginDamageCooldown());
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             KillPlayer();
         }

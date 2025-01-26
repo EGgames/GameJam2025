@@ -1,29 +1,30 @@
+using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 
     //Inicializamos instancia Singleton
     public static GameManager Instance;
+    
+    [Header("Configuración del juego")]
+    [Tooltip("Duración del juego en segundos")]
+    public float gameDuration = 300f;
+    [Tooltip(("Referencia al jugador"))]
+    public PlayerController player;
+    
     [Header("Referencias a Elementos de la interfaz gráfica")]
-    [Tooltip("Elementos que sean necesarios de la UI")]
-    public TMP_Text scoreUI;
-    public TMP_Text livesUI;
+    [Tooltip("Barra de vida")]
+    public Slider healthBarFill;
+    [Tooltip("Texto de tiempo")]
     public TMP_Text timeUI;
-    [FormerlySerializedAs("impulseStatusUI")] public TMP_Text fuelAmountUI;
+
+    // public Image dashIndicator;
     public GameObject gameOverPanel;
-
-    [Header("Textos por defecto en la UI")]
-    [Tooltip("Textos escritos manualmente para administrar posteriormente control de localización")]
-    public string scoreTxt;
-    public string livesTxt;
-    public string timeTxt;
-    public string fuelAmountTxt;
-
-
+    
     private int initialLives = 3;
     private int initialScore = 0;
     private int initialTime = 0;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     [Header("Puntaje general")]
     [Tooltip("Se administra con esta variable")]
     public int scoreGral;
-
+    
     void Awake()
     {
         //Seteamos velocidad del juego por tiempo de ejecucion
@@ -41,9 +42,6 @@ public class GameManager : MonoBehaviour
         //Ocultamos GameOverPanel
         gameOverPanel.SetActive(false);
         //Inicia con contadores por defecto
-        scoreUI.text = scoreTxt + initialScore.ToString();
-        livesUI.text = livesTxt + initialLives.ToString();
-        timeUI.text = timeTxt + initialTime.ToString();
 
         // Configura el Singleton
         if (Instance == null)
@@ -63,7 +61,8 @@ public class GameManager : MonoBehaviour
     private void Timer()
     {
         currentTime += Time.deltaTime;
-        timeUI.text = timeTxt + currentTime.ToString("f0");
+        // Actualiza el texto de tiempo en la interfaz gráfica
+        timeUI.text = TimeSpan.FromSeconds(gameDuration - currentTime).ToString("mm':'ss");
     }
 
     public void ScoreCount()
@@ -71,15 +70,16 @@ public class GameManager : MonoBehaviour
         scoreGral++;
     }
     
-    public void UpdateLives(int lives)
+    public void UpdateHealthUI(int newHealth)
     {
-        livesUI.text = livesTxt + lives.ToString();
+        float fillAmount = (float)newHealth / player.maxHealth;
+        healthBarFill.value = fillAmount;
     }
     
-    public void UpdateFuelAmount(float amount)
-    {
-        fuelAmountUI.text = fuelAmountTxt + amount.ToString("f0");
-    }
+    // public void UpdateDashIndicator(bool isReady)
+    // {
+    //     dashIndicator.color = new Color(1, 1, 1, isReady ? 1 : 0.5f);
+    // }
 
     public void GameOver()
     {
@@ -89,9 +89,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Timer();
+        if (currentTime < gameDuration)
+        {
+            Timer();
+        }
 
         //Puntaje en vivo
-        scoreUI.text = scoreTxt + scoreGral;
+        // scoreUI.text = scoreTxt + scoreGral;
     }
 }
