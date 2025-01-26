@@ -1,12 +1,14 @@
-﻿[System.Serializable]
+﻿using UnityEngine.Audio;
+
+[System.Serializable]
 public class EnemyWave
 {
-    public float spawnTime;
     public Spawner[] spawners;
+    public AudioMixerSnapshot musicSnapshot;
 
-    public EnemyWave(float spawnTime, Spawner[] spawners)
+    public EnemyWave(float spawnTime, Spawner[] spawners, AudioMixerSnapshot musicSnapshot)
     {
-        this.spawnTime = spawnTime;
         this.spawners = spawners;
+        this.musicSnapshot = musicSnapshot;
     }
 }
