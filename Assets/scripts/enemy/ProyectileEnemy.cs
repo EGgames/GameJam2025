@@ -13,7 +13,7 @@ public class ProyectileEnemy : Enemy
 
     public float targetMaxDistance = 7f; // The target distance we want to maintain
     public float targetMinDistance = 1f; // The target distance we want to maintain
-    
+
     private float currentDistance;
 
     protected override void Start()
