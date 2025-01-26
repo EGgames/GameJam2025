@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8895989000147735921}
   - component: {fileID: -619518173069144093}
   - component: {fileID: 2975158753886073811}
+  - component: {fileID: 8371753151225263630}
   m_Layer: 3
   m_Name: ProyectileEnemy
   m_TagString: Enemy
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5104, y: 0.5104, z: 0.5104}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 1169637791
   m_SortingLayer: 5
   m_SortingOrder: 40
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 3206550811919491524, guid: 16c55993ba4df4bf48bbce6d3f9b6b2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,13 +104,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  moveSpeed: 4
   deathEffect: {fileID: 0}
+  _spriteRenderer: {fileID: 0}
   shootIntervalSecs: 3
   proyectilePrefab: {fileID: 4469056592101994726, guid: 652a2cf89dce60e4db76fc28a83a17ea, type: 3}
-  moveSpeed: 4
   targetMaxDistance: 10
   targetMinDistance: 3
-  smoothFactor: 0.1
 --- !u!60 &-619518173069144093
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -147,8 +148,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.73, y: 7.47}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -156,9 +157,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+    - - {x: 4.085844, y: 2.031889}
+      - {x: 3.6035635, y: 4.074934}
+      - {x: -3.4449697, y: 2.5763135}
+      - {x: -4.103562, y: -3.7332482}
+      - {x: -0.20269793, y: -3.960812}
+      - {x: 3.202671, y: -3.4682803}
   m_UseDelaunayMesh: 0
 --- !u!50 &2975158753886073811
 Rigidbody2D:
@@ -187,3 +191,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!111 &8371753151225263630
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267817652936222168}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0

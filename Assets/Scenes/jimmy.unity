@@ -10350,28 +10350,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1671452337 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4267817652936222168, guid: de4a9f7dcb4e7b946b3994d663fa7a80, type: 3}
-  m_PrefabInstance: {fileID: 1792420329}
-  m_PrefabAsset: {fileID: 0}
---- !u!111 &1671452343
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671452337}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &1693044992
 GameObject:
   m_ObjectHideFlags: 0
@@ -11130,15 +11108,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4267817652936222168, guid: de4a9f7dcb4e7b946b3994d663fa7a80, type: 3}
       propertyPath: m_Name
-      value: ProyectileEnemy (1)
+      value: ProyectileEnemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4267817652936222168, guid: de4a9f7dcb4e7b946b3994d663fa7a80, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1671452343}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4a9f7dcb4e7b946b3994d663fa7a80, type: 3}
 --- !u!1 &1823391293
 GameObject:
