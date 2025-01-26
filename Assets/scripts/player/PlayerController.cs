@@ -63,8 +63,10 @@ public class PlayerController : MonoBehaviour
 
     private float nextFireTime;
 
+    // --- Componentes ---
     private Rigidbody2D rb2D;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     private int currentHealth;
 
@@ -95,6 +97,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         currentFuel = maxFuel;
         currentHealth = maxHealth;
         GameManager.Instance.UpdateHealthUI(maxHealth);
@@ -126,6 +129,9 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 input = new Vector2(x, y).normalized;
+        
+        // Le pasamos el valor de input a la animación
+        animator.SetFloat("Movement", input.magnitude);
 
         if (input.magnitude > 0.01f)
         {

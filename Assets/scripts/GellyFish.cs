@@ -6,6 +6,13 @@ public class GellyFishBounce : MonoBehaviour
     [Header("Parámetros de Rebote")]
     [SerializeField] private float bounceForce = 10f;
 
+    private Animator _animator;
+    
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -25,6 +32,9 @@ public class GellyFishBounce : MonoBehaviour
                 
                 // Le decimos al PlayerController que active el power-up de rebote
                 playerController.BouncePowerUp();
+                
+                // Reproducir animación de rebote
+                _animator.SetTrigger("Bounce");
             }
         }
     }
