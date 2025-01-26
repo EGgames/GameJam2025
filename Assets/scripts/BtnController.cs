@@ -16,14 +16,9 @@ public class BtnController : MonoBehaviour
     {
         SceneManager.LoadScene("Loading");
     }
-
-    public void Controls()
+    
+    public void ExitGame()
     {
-
-    }
-
-    public void Exit()
-    {
-
+        Application.Quit();
     }
 }
