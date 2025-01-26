@@ -116,9 +116,9 @@ TextureImporter:
       name: Nave 2_00006_0
       rect:
         serializedVersion: 2
-        x: 94
+        x: 84
         y: 0
-        width: 827
+        width: 785
         height: 1000
       alignment: 0
       pivot: {x: 0, y: 0}
