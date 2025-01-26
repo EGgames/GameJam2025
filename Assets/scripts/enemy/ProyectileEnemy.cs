@@ -2,85 +2,67 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
-public class ProyectileEnemy : MonoBehaviour
+public class ProyectileEnemy : Enemy
 {
     // The interval between this enemy's shots (in seconds)
     public float shootIntervalSecs;
     public GameObject proyectilePrefab;
-    private GameObject target;
-
-    private Collider2D collider;
-    private Rigidbody2D rb;
 
     // How much time the enemy has to wait to shoot again (in seconds)
     private float shootCooldownSecs = 0;
 
-    // Inertia settings
-    public float moveSpeed = 5f; // How fast the enemy moves
     public float targetMaxDistance = 7f; // The target distance we want to maintain
     public float targetMinDistance = 1f; // The target distance we want to maintain
-    public float smoothFactor = 0.1f; // Controls how smoothly the enemy moves
+    
+    private float currentDistance;
 
-    private void Start()
+    protected override void Start()
     {
-        //components
-        collider = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();
 
-        //references
-        target = GameObject.FindGameObjectWithTag("Player");
-
-        //fields setup
+        // fields setup
         shootCooldownSecs = Random.Range(0, shootIntervalSecs);
     }
 
     private void Update()
     {
-        if(target != null)
-        {
-            TickShotInterval();
-            TickAim();
-            TickKeepDistanceToTarget();
-        }
+        if (!_player) return;
+        TickShotInterval();
+        TickAim();
     }
 
-    private void TickKeepDistanceToTarget()
+    protected override void MoverEnemigo()
     {
-        Vector2 targetPosition = target.transform.position;
+        Vector2 targetPosition = _player.position;
         Vector2 currentPosition = transform.position;
         Vector2 direction = targetPosition - currentPosition;
-        float currentDistance = direction.magnitude;
+        currentDistance = direction.magnitude;
 
         // Normalize the direction vector to get the unit vector
         direction.Normalize();
 
-        // Calculate the desired velocity
-        Vector2 desiredVelocity = Vector2.zero;
+        // Calculate the desired position
+        Vector2 desiredPosition = currentPosition;
 
         if (currentDistance > targetMaxDistance)
         {
             // Move closer to the target if we're too far away
-            desiredVelocity = direction * moveSpeed;
+            desiredPosition += direction * (moveSpeed * Time.deltaTime);
         }
         else if (currentDistance < targetMinDistance)
         {
             // Move away from the target if we're too close
-            desiredVelocity = -direction * moveSpeed;
+            desiredPosition -= direction * (moveSpeed * Time.deltaTime);
         }
 
-        // Apply smooth physics-based movement using velocity
-        // Instead of setting the velocity directly, we add a force to the Rigidbody2D
-        Vector2 velocityDifference = desiredVelocity - rb.linearVelocity;
-        Vector2 forceToApply = velocityDifference * smoothFactor;
-
-        // Apply the force to the Rigidbody2D to move it dynamically
-        rb.AddForce(forceToApply);
+        // Move the enemy using Rigidbody2D.MovePosition
+        _rb.MovePosition(desiredPosition);
     }
 
     private void TickShotInterval()
     {
         shootCooldownSecs -= Time.deltaTime;
-        if(shootCooldownSecs <= 0)
+        if (shootCooldownSecs <= 0 && currentDistance < targetMaxDistance)
         {
             Shoot();
             shootCooldownSecs = shootIntervalSecs;
@@ -89,7 +71,7 @@ public class ProyectileEnemy : MonoBehaviour
 
     private void TickAim()
     {
-        Vector2 targetPosition = target.transform.position;
+        Vector2 targetPosition = _player.position;
         Vector2 direction = targetPosition - (Vector2)transform.position;
         //-90 is used to use transform.up as the front of the enemy
         float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90;

@@ -1,62 +1,30 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class MeleeEnemy : Enemy
 {
-    [Header("Atributos del Enemigo")]
-    [Tooltip("Vida del enemigo.")]
-    public int health = 1; // Establece a 1 para que muera con un solo disparo
-
     [Tooltip("Si está en true, el enemigo mata al jugador en una colisión si este no lo destruye antes.")]
     public bool garras = false;
 
     [Tooltip("Referencia al objeto con el collider de ataque")]
     public GameObject _attackColliderObj;
 
-    [Header("Movimiento / Persecución")]
-    [Tooltip("Velocidad base del enemigo")]
-    public float velocidad = 5f;
-
     [Header("Alternancia de color y garras")]
     [Tooltip("Cada cuántos segundos alterna entre garras activas/rojas y garras inactivas/color original.")]
     public float intervaloCambiarGarras = 2f;
 
-    [Tooltip("Efecto visual al morir (opcional).")]
-    public GameObject deathEffect;
-
-    // Referencias internas
-    private Transform _player;          // Para perseguir al jugador
-    private SpriteRenderer _spriteRenderer;
     private Color _colorOriginal;
-    private Rigidbody2D _rb;
 
-    private void Start()
+    protected override void Start()
     {
-        // Buscar al jugador (por etiqueta "Player")
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            _player = playerObj.transform;
-
-        // Guardar referencia al SpriteRenderer y su color original
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        base.Start();
         if (_spriteRenderer != null)
             _colorOriginal = _spriteRenderer.color;
-
-        // Guardar referencia al Rigidbody2D
-        _rb = GetComponent<Rigidbody2D>();
 
         // Iniciar la rutina que alterna color y garras cada X segundos
         StartCoroutine(ToggleGarrasColorRoutine());
     }
 
-    private void FixedUpdate()
-    {
-        MoverEnemigo();
-    }
-
-    /// <summary>
-    /// Mueve al enemigo hacia el jugador.
-    /// </summary>
-    private void MoverEnemigo()
+    protected override void MoverEnemigo()
     {
         if (!_player) return;
 
@@ -64,17 +32,12 @@ public class Enemy : MonoBehaviour
         Vector2 direction = (_player.position - transform.position).normalized;
 
         // Calculamos la nueva posición
-        Vector2 newPosition = _rb.position + direction * (velocidad * Time.deltaTime);
+        Vector2 newPosition = _rb.position + direction * (moveSpeed * Time.deltaTime);
 
         // Movemos al enemigo usando Rigidbody2D.MovePosition
         _rb.MovePosition(newPosition);
     }
 
-    /// <summary>
-    /// Rutina que alterna cada 'intervaloCambiarGarras' segundos:
-    /// - Garras activas (color rojo)
-    /// - Garras inactivas (color original)
-    /// </summary>
     private System.Collections.IEnumerator ToggleGarrasColorRoutine()
     {
         while (true)
@@ -113,36 +76,5 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// Método para aplicar daño al enemigo.
-    /// </summary>
-    /// <param name="damage">Cantidad de daño a aplicar.</param>
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        Debug.Log($"{gameObject.name} recibió {damage} daño. Salud restante: {health}");
-
-        if (health <= 0)
-        {
-            Die();
-        }
-    }
-
-    /// <summary>
-    /// Método que se llama cuando el enemigo muere.
-    /// </summary>
-    private void Die()
-    {
-        // Opcional: Instanciar un efecto visual al morir
-        if (deathEffect != null)
-        {
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
-        }
-
-        // Destruir el enemigo
-        Destroy(gameObject);
-        GameManager.Instance.ScoreCount(); // Contar el score aquí
     }
 }

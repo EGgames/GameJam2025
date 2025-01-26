@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 275362805740870673}
   - component: {fileID: 4944925273536624789}
   m_Layer: 3
-  m_Name: Enemy
+  m_Name: MeleeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,11 +104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  deathEffect: {fileID: 0}
   garras: 0
   _attackColliderObj: {fileID: 8151105110069726153}
   velocidad: 4
   intervaloCambiarGarras: 2
-  deathEffect: {fileID: 0}
 --- !u!50 &275362805740870673
 Rigidbody2D:
   serializedVersion: 5

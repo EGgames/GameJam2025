@@ -81,11 +81,11 @@ public class ProjectilePlayer : MonoBehaviour
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {
-                //Suma un punto
-                GameManager.Instance.ScoreCount();
-                // Aplicar daño al enemigo
                 enemy.TakeDamage(1); // En este caso, 1 daño es suficiente para destruir al enemigo
-                Destroy(gameObject); //Destruimos el proyectil
+                if (!isPoweredUp)
+                {
+                    Destroy(gameObject); // Destruimos el proyectil si no está en modo powered up
+                }
             }
             else
             {
