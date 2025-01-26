@@ -9,10 +9,23 @@ public class AudioManager : MonoBehaviour
    [SerializeField] AudioSource musicWave4;
    [SerializeField] AudioSource musicWave5;
 
+   [SerializeField] 
+
     private void Start() 
     {
+         
+         //     Play the music al unísono.
+
          musicWave1.Play();
+         musicWave2.Play();
+         musicWave3.Play();
+         musicWave4.Play();
+         musicWave5.Play();
+
+
     }
+
+
 
 }
 
