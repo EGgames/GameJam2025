@@ -10,7 +10,7 @@ public class LoadingScreenManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(LoadSceneAsync(SceneLoader.sceneToLoad)); // Carga la escena destino
+        StartCoroutine(LoadSceneAsync("Main")); // Carga la escena destino
     }
 
     private IEnumerator LoadSceneAsync(string sceneName)

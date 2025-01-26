@@ -105,6 +105,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Si presiona la tecla de escape, pausar el juego
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.TogglePause();
+        }
+        
+        if (GameManager.Instance.isPaused) return;
+        
         ChargeImpulse();
         RechargeFuel();
 
@@ -123,6 +131,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameManager.Instance.isPaused) return;
+        
         // ========== Movimiento flotante con WASD ==========
 
         // 1. Leer la entrada (Horizontal y Vertical)

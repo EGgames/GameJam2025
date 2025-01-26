@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [Tooltip("Se administra con esta variable")]
     public int scoreGral;
 
+    public bool isPaused;
+
     void Awake()
     {
         //Seteamos velocidad del juego por tiempo de ejecucion
@@ -96,5 +98,18 @@ public class GameManager : MonoBehaviour
 
         //Puntaje en vivo
         // scoreUI.text = scoreTxt + scoreGral;
+    }
+    
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0 : 1;
+        pausePanel.SetActive(isPaused);
+    }
+    
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
