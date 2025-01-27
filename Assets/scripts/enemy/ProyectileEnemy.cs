@@ -73,17 +73,25 @@ public class ProyectileEnemy : Enemy
             shootCooldownSecs = shootIntervalSecs;
         }
     }
-
+    
     private void TickAim()
     {
         // Flip the sprite horizontally if the player is to the right
         spriteRenderer.flipX = _player.position.x > transform.position.x;
     }
 
+    private Quaternion GetRotationToTarget()
+    {
+        Vector2 targetPosition = _player.position;
+        Vector2 direction = targetPosition - (Vector2)transform.position;
+        //-90 is used to use transform.up as the front of the enemy
+        float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90;
+        return Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
     public void Shoot()
     {
         Debug.Log($"'{gameObject.name}' has shot!");
-        // Instantiate projectile prefab and rotate it so that it's up direction is the same as the player's direction
-        
+        Instantiate(proyectilePrefab, transform.position, GetRotationToTarget());
     }
 }
