@@ -14,7 +14,11 @@ public class ProyectileEnemy : Enemy
     public float targetMaxDistance = 7f; // The target distance we want to maintain
     public float targetMinDistance = 1f; // The target distance we want to maintain
 
+    public Transform firePoint;
+    
     private float currentDistance;
+    
+    private SpriteRenderer spriteRenderer;
 
     protected override void Start()
     {
@@ -22,6 +26,7 @@ public class ProyectileEnemy : Enemy
 
         // fields setup
         shootCooldownSecs = Random.Range(0, shootIntervalSecs);
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -71,16 +76,14 @@ public class ProyectileEnemy : Enemy
 
     private void TickAim()
     {
-        Vector2 targetPosition = _player.position;
-        Vector2 direction = targetPosition - (Vector2)transform.position;
-        //-90 is used to use transform.up as the front of the enemy
-        float angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg) - 90;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        // Flip the sprite horizontally if the player is to the right
+        spriteRenderer.flipX = _player.position.x > transform.position.x;
     }
 
     public void Shoot()
     {
         Debug.Log($"'{gameObject.name}' has shot!");
-        Instantiate(proyectilePrefab, transform.position, transform.rotation);
+        // Instantiate projectile prefab and rotate it so that it's up direction is the same as the player's direction
+        
     }
 }

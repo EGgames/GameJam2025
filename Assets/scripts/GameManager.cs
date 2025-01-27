@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public float gameDuration = 300f;
     [Tooltip(("Referencia al jugador"))]
     public PlayerController player;
+    [Tooltip("Referencia al Big Cat")]
+    public GameObject bigCat;
 
     [Header("Referencias a Elementos de la interfaz gráfica")]
     [Tooltip("Barra de vida")]
@@ -91,6 +93,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (currentTime >= gameDuration)
+        {
+            bigCat.SetActive(true);
+        }
+        
         if (currentTime < gameDuration)
         {
             Timer();
