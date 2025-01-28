@@ -204,7 +204,8 @@ public class PlayerController : MonoBehaviour
 
         // Obtener la posición del mouse en el mundo
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPos - firePoint.position).normalized;
+        mouseWorldPos.z = 0; // Ensure z is 0 for 2D
+        Vector2 direction = (mouseWorldPos - transform.position).normalized;
 
         // Asignar la dirección y velocidad al proyectil
         ProjectilePlayer projectileScript = projectile.GetComponent<ProjectilePlayer>();
