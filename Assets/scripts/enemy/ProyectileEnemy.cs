@@ -77,7 +77,7 @@ public class ProyectileEnemy : Enemy
     private void TickAim()
     {
         // Flip the sprite horizontally if the player is to the right
-        spriteRenderer.flipX = _player.position.x > transform.position.x;
+        spriteRenderer.transform.localScale = new Vector3(_player.position.x > transform.position.x ? -1 : 1, 1, 1);
     }
 
     private Quaternion GetRotationToTarget()
@@ -92,6 +92,6 @@ public class ProyectileEnemy : Enemy
     public void Shoot()
     {
         Debug.Log($"'{gameObject.name}' has shot!");
-        Instantiate(proyectilePrefab, transform.position, GetRotationToTarget());
+        Instantiate(proyectilePrefab, firePoint.position, GetRotationToTarget());
     }
 }
