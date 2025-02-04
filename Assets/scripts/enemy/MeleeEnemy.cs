@@ -2,16 +2,20 @@ using UnityEngine;
 
 public class MeleeEnemy : Enemy
 {
+    [Tooltip("Radio de distancia a mantener con otros enemigos.")]
+    public float avoidanceRadius = 2f;
+    
     [Tooltip("Si está en true, el enemigo mata al jugador en una colisión si este no lo destruye antes.")]
     public bool garras = false;
 
     [Tooltip("Referencia al objeto con el collider de ataque")]
     public GameObject _attackColliderObj;
+    
 
     [Header("Alternancia de color y garras")]
     [Tooltip("Cada cuántos segundos alterna entre garras activas/rojas y garras inactivas/color original.")]
     public float intervaloCambiarGarras = 2f;
-
+    
     private Color _colorOriginal;
 
     protected override void Start()
@@ -29,10 +33,27 @@ public class MeleeEnemy : Enemy
         if (!_player) return;
 
         // Calculamos la dirección hacia el jugador
-        Vector2 direction = (_player.position - transform.position).normalized;
+        var attractionDirection = (_player.position - transform.position).normalized;
+
+        var repulsionDirection = Vector3.zero;
+
+        // Detectamos si hay otros enemigos cerca
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, avoidanceRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Enemy") && collider.gameObject != gameObject)
+            {
+                // Si hay un enemigo cerca, alejarse de él
+                repulsionDirection += (transform.position - collider.transform.position).normalized /
+                                      Vector3.Distance(collider.transform.position, transform.position);
+            }
+        }
+        
+        // Sumamos la dirección de repulsión a la dirección de atracción
+        Vector3 moveDirection = (attractionDirection + repulsionDirection).normalized;
 
         // Calculamos la nueva posición
-        Vector2 newPosition = _rb.position + direction * (moveSpeed * Time.deltaTime);
+        Vector2 newPosition = _rb.position + (Vector2)moveDirection * (moveSpeed * Time.deltaTime);
 
         // Movemos al enemigo usando Rigidbody2D.MovePosition
         _rb.MovePosition(newPosition);
@@ -53,7 +74,7 @@ public class MeleeEnemy : Enemy
             //     _spriteRenderer.color = garras ? Color.red : _colorOriginal;
             // }
             _animator.SetBool("IsAttacking", garras);
-            
+
             // Reproducir sonido de ataque
             if (garras)
             {
@@ -77,6 +98,7 @@ public class MeleeEnemy : Enemy
                     // Aplicar daño al jugador
                     playerController.TakeDamage(1); // Ajusta la cantidad de daño según sea necesario
                 }
+
                 if (playerController.isPoweredUp)
                 {
                     // Si el jugador está en modo powered up, matar al enemigo

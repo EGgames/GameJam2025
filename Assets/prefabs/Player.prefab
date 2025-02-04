@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4750853996184789936}
   - component: {fileID: 6851985765568850462}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8180778926192657740}
   - component: {fileID: 6725944180263429176}
   - component: {fileID: 88527384822116129}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -259,7 +259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3388456213398354525}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452929803699778503}
   - component: {fileID: 6221820975789335066}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DashIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4898966484202211500}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpriteRotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1107295965086192005}
   - component: {fileID: 4987985660542555855}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AxolotlSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

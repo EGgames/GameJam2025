@@ -8151,6 +8151,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PausePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5026877352578314040, guid: 499a27789065f2947a130da90c9301c1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6164600872793627664, guid: 499a27789065f2947a130da90c9301c1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -8267,6 +8271,10 @@ PrefabInstance:
     - target: {fileID: 3023824139310823720, guid: d639db9e0a077bf459d351158625f915, type: 3}
       propertyPath: m_Name
       value: SpawnManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3023824139310823720, guid: d639db9e0a077bf459d351158625f915, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8835862000131103463, guid: d639db9e0a077bf459d351158625f915, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8545,8 +8553,8 @@ SceneRoots:
   - {fileID: 198323620}
   - {fileID: 281822124153885937}
   - {fileID: 2602799555683769444}
+  - {fileID: 3036558377264462522}
   - {fileID: 917999218855833947}
   - {fileID: 544953343}
   - {fileID: 1643326785}
   - {fileID: 1051479232}
-  - {fileID: 3036558377264462522}
