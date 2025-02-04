@@ -93,5 +93,9 @@ public class ProyectileEnemy : Enemy
     {
         Debug.Log($"'{gameObject.name}' has shot!");
         Instantiate(proyectilePrefab, firePoint.position, GetRotationToTarget());
+        
+        // Reproducir sonido de disparo
+        _audioSource.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+        _audioSource.Play();
     }
 }

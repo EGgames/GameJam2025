@@ -35,6 +35,9 @@ public class GellyFishBounce : MonoBehaviour
                 
                 // Reproducir animación de rebote
                 _animator.SetTrigger("Bounce");
+                
+                // Reproducir sonido de rebote
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jellyBounce);
             }
         }
     }

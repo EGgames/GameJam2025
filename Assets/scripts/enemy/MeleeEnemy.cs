@@ -53,6 +53,13 @@ public class MeleeEnemy : Enemy
             //     _spriteRenderer.color = garras ? Color.red : _colorOriginal;
             // }
             _animator.SetBool("IsAttacking", garras);
+            
+            // Reproducir sonido de ataque
+            if (garras)
+            {
+                _audioSource.clip = attackSounds[Random.Range(0, attackSounds.Length)];
+                _audioSource.Play();
+            }
         }
     }
 

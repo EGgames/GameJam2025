@@ -217,6 +217,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning("El prefab del proyectil no tiene el script 'Projectile' asignado.");
         }
+        
+        // Reproducir sonido de disparo
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.playerBubbaShot);
     }
 
 
@@ -271,6 +274,9 @@ public class PlayerController : MonoBehaviour
 
             // Iniciamos la corrutina que frena el impulso poco a poco
             slowDownCoroutine = StartCoroutine(SlowDownImpulse());
+            
+            // Reproducir sonido de dash
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.playerDash);
         }
     }
 
@@ -341,13 +347,20 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage = 1)
     {
         if (currentDamageCooldown > 0f) return;
+        
         currentHealth -= damage;
         GameManager.Instance.UpdateHealthUI(currentHealth);
-        StartCoroutine(BeginDamageCooldown());
+        
         if (currentHealth <= 0)
         {
             KillPlayer();
+            return;
         }
+
+        StartCoroutine(BeginDamageCooldown());
+        
+        // Reproducir sonido de daño
+        AudioManager.Instance.PlayRandomSFX(AudioManager.Instance.playerDamage);
     }
 
     public Vector2 GetCurrentVelocity()

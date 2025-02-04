@@ -14,10 +14,17 @@ public abstract class Enemy : MonoBehaviour
     public GameObject deathEffect;
     [Tooltip("Referencia al SpriteRenderer del enemigo.")]
     public SpriteRenderer _spriteRenderer;
+    
+    [Header("Sonidos del enemigo")]
+    [Tooltip("Sonidos de ataque del enemigo.")]
+    public AudioClip[] attackSounds;
+    [Tooltip("Sonidos de muerte del enemigo.")]
+    public AudioClip[] deathSounds;
 
     protected Transform _player;
     protected Rigidbody2D _rb;
     protected Animator _animator;
+    protected AudioSource _audioSource;
 
     protected virtual void Start()
     {
@@ -31,6 +38,9 @@ public abstract class Enemy : MonoBehaviour
 
         // Guardar referencia al Rigidbody2D
         _rb = GetComponent<Rigidbody2D>();
+        
+        // Guardar referencia al AudioSource
+        _audioSource = GetComponent<AudioSource>();
     }
 
     protected virtual void FixedUpdate()
@@ -58,6 +68,10 @@ public abstract class Enemy : MonoBehaviour
         {
             Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
+        
+        // Reproducir sonido de muerte
+        _audioSource.clip = deathSounds[Random.Range(0, deathSounds.Length)];
+        _audioSource.Play();
 
         // Destruir el enemigo
         Destroy(gameObject);

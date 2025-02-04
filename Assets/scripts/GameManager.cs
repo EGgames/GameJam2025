@@ -87,6 +87,12 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        // Agregar audio listener al objeto de la cámara
+        Camera.main.gameObject.AddComponent<AudioListener>();
+        // Reproducir sonido de muerte del jugador
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.playerDeath);
+        // Parar la música
+        AudioManager.Instance.StopMusic();
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
     }
