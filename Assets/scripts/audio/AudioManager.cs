@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     //Inicializamos instancia Singleton
     public static AudioManager Instance;
     
+    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource sfxSource;
     
     [Header("------ Music ------")] 
@@ -37,6 +39,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        LoadVolume();
         //     Play the music al unísono.
         musicWave1.Play();
         musicWave2.Play();
@@ -64,5 +67,24 @@ public class AudioManager : MonoBehaviour
         musicWave3.Stop();
         musicWave4.Stop();
         musicWave5.Stop();
+    }
+    
+    private void LoadVolume()
+    {
+        if (PlayerPrefs.HasKey("masterVolume"))
+        {
+            var masterVolume = PlayerPrefs.GetFloat("masterVolume");
+            audioMixer.SetFloat("master", Mathf.Log10(masterVolume) * 20);
+        }
+        if (PlayerPrefs.HasKey("musicVolume"))
+        {
+            var musicVolume = PlayerPrefs.GetFloat("musicVolume");
+            audioMixer.SetFloat("music", Mathf.Log10(musicVolume) * 20);
+        }
+        if (PlayerPrefs.HasKey("sfxVolume"))
+        {
+            var sfxVolume = PlayerPrefs.GetFloat("sfxVolume");
+            audioMixer.SetFloat("sfx", Mathf.Log10(sfxVolume) * 20);
+        }
     }
 }

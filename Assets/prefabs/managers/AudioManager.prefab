@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeaf2548e024e4299ac063c8824a1a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: f2af414f8c6c0479abdf7658d77c6b51, type: 2}
   sfxSource: {fileID: 1053738098043806364}
   musicWave1: {fileID: 5210673904583135438}
   musicWave2: {fileID: 2812331474019574982}
