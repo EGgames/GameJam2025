@@ -239,7 +239,8 @@ MonoBehaviour:
   health: 1
   moveSpeed: 4
   deathEffect: {fileID: 0}
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 93469922524782673}
+  _bodyAttackColliderObj: {fileID: 1742554020934688413}
   attackSounds:
   - {fileID: 8300000, guid: 1dcdde7fb5912aa4ea0a0f9b2b2859d0, type: 3}
   deathSounds:

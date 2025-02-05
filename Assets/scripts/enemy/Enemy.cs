@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public abstract class Enemy : MonoBehaviour
     public GameObject deathEffect;
     [Tooltip("Referencia al SpriteRenderer del enemigo.")]
     public SpriteRenderer _spriteRenderer;
+    [Tooltip("Referencia al Objeto de collider (body attack) del enemigo.")]
+    public GameObject _bodyAttackColliderObj;
     
     [Header("Sonidos del enemigo")]
     [Tooltip("Sonidos de ataque del enemigo.")]
@@ -25,6 +29,9 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody2D _rb;
     protected Animator _animator;
     protected AudioSource _audioSource;
+    protected Collider2D _collider;
+
+    protected bool IsDead;
 
     protected virtual void Start()
     {
@@ -39,12 +46,16 @@ public abstract class Enemy : MonoBehaviour
         // Guardar referencia al Rigidbody2D
         _rb = GetComponent<Rigidbody2D>();
         
+        // Guardar referencia al Collider
+        _collider = GetComponent<Collider2D>();
+        
         // Guardar referencia al AudioSource
         _audioSource = GetComponent<AudioSource>();
     }
 
     protected virtual void FixedUpdate()
     {
+        if (IsDead) return;
         MoverEnemigo();
     }
 
@@ -52,6 +63,7 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        if (IsDead) return;
         health -= damage;
         Debug.Log($"{gameObject.name} recibió {damage} daño. Salud restante: {health}");
 
@@ -63,6 +75,17 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
+        IsDead = true;
+        
+        // Desactivar el collider de ataque
+        if (_bodyAttackColliderObj)
+        {
+            _bodyAttackColliderObj.SetActive(false);
+        }
+        
+        // Desactivar el collider
+        _collider.enabled = false;
+        
         // Opcional: Instanciar un efecto visual al morir
         if (deathEffect != null)
         {
@@ -72,9 +95,10 @@ public abstract class Enemy : MonoBehaviour
         // Reproducir sonido de muerte
         _audioSource.clip = deathSounds[Random.Range(0, deathSounds.Length)];
         _audioSource.Play();
-
-        // Destruir el enemigo
-        Destroy(gameObject);
+        
+        // Cuando termina el sonido de muerte, destruir el objeto
+        Destroy(gameObject, _audioSource.clip.length);
+        
         GameManager.Instance.ScoreCount(); // Contar el score aquí
     }
 }

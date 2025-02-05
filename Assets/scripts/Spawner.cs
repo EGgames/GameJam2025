@@ -1,4 +1,6 @@
 using System;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -69,5 +71,14 @@ public class Spawner : MonoBehaviour
         Instantiate(enemyPrefabs[index], transform.position, Quaternion.identity);
         
         spawnCount++;
+    }
+    
+    // Dibujar gizmos para visualizar el área de spawn
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 1f);
+        // Texto con la cantidad de enemigos restantes
+        Handles.Label(transform.position + Vector3.up, $"{numberOfSpawns - spawnCount}");
     }
 }

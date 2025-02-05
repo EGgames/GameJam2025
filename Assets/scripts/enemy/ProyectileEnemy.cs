@@ -31,13 +31,15 @@ public class ProyectileEnemy : Enemy
 
     private void Update()
     {
-        if (!_player) return;
+        if (!_player || IsDead) return;
         TickShotInterval();
         TickAim();
     }
 
     protected override void MoverEnemigo()
     {
+        if (!_player) return;
+        
         Vector2 targetPosition = _player.position;
         Vector2 currentPosition = transform.position;
         Vector2 direction = targetPosition - currentPosition;

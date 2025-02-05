@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Mantener este objeto entre escenas
         }
         else
         {
@@ -93,7 +93,15 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlaySFX(AudioManager.Instance.playerDeath);
         // Parar la música
         AudioManager.Instance.StopMusic();
+        
+        StartCoroutine(GameOverRoutine());
+    }
+    
+    private IEnumerator GameOverRoutine()
+    {
+        // Esperamos 2 segundos antes de pausar el juego para que se termine de animar el panel de Game Over
         gameOverPanel.SetActive(true);
+        yield return new WaitForSeconds(2f);
         Time.timeScale = 0f;
     }
 

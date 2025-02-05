@@ -61,10 +61,12 @@ public class MeleeEnemy : Enemy
 
     private System.Collections.IEnumerator ToggleGarrasColorRoutine()
     {
-        while (true)
+        while (!IsDead)
         {
             // Esperamos X segundos antes de cambiar de estado
             yield return new WaitForSeconds(intervaloCambiarGarras);
+            
+            if (IsDead) yield break;
 
             // Alternamos el estado de garras
             garras = !garras;
@@ -86,6 +88,7 @@ public class MeleeEnemy : Enemy
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (IsDead) return;
         // Verificamos si el objeto colisionado es el jugador
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -106,5 +109,11 @@ public class MeleeEnemy : Enemy
                 }
             }
         }
+    }
+    
+    protected override void Die()
+    {
+        base.Die();
+        _attackColliderObj.SetActive(false);
     }
 }

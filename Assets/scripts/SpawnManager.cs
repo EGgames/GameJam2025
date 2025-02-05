@@ -35,16 +35,24 @@ namespace DefaultNamespace
             StartCoroutine(SpawnWaves());
         }
 
+        private void FixedUpdate()
+        {
+            // Seguir al jugador
+            if (!GameManager.Instance.player) return;
+            transform.position = new Vector3(GameManager.Instance.player.transform.position.x, GameManager.Instance.player.transform.position.y, transform.position.z);
+        }
+
         private IEnumerator SpawnWaves()
         {
             foreach (var wave in waves)
             {
-                if (wave != waves[0])
-                {
-                    yield return new WaitForSeconds(waveDuration);
-                }
                 SpawnWave(wave);
                 PlayWaveMusic(wave);
+                
+                // Si no es la última oleada, esperar X segundos antes de detenerla y pasar a la siguiente
+                if (wave == waves[^1]) continue;
+                yield return new WaitForSeconds(waveDuration);
+                StopWave(wave);
             }
         }
 
@@ -53,6 +61,14 @@ namespace DefaultNamespace
             foreach (var spawner in wave.spawners)
             {
                 spawner.gameObject.SetActive(true);
+            }
+        }
+        
+        private void StopWave(EnemyWave wave)
+        {
+            foreach (var spawner in wave.spawners)
+            {
+                spawner.gameObject.SetActive(false);
             }
         }
         
