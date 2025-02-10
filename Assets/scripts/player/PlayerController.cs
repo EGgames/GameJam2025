@@ -321,14 +321,14 @@ public class PlayerController : MonoBehaviour
     private IEnumerator BeginDamageCooldown()
     {
         currentDamageCooldown = damageCooldown;
-        // Le damos un efecto visual de invulnerabilidad bajando la opacidad
-        spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+        // Le damos un efecto visual de invulnerabilidad
+        animator.SetBool("IsInvincible", true);
         while (currentDamageCooldown > 0f)
         {
             currentDamageCooldown = Mathf.Max(0, currentDamageCooldown - Time.deltaTime);
             yield return null;
         }
-        spriteRenderer.color = Color.white;
+        animator.SetBool("IsInvincible", false);
     }
 
     /// <summary>
@@ -350,6 +350,7 @@ public class PlayerController : MonoBehaviour
         
         currentHealth -= damage;
         GameManager.Instance.UpdateHealthUI(currentHealth);
+        GameManager.Instance.ShowDamageIndicator(damageCooldown);
         
         if (currentHealth <= 0)
         {

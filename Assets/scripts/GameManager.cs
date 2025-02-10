@@ -24,9 +24,13 @@ public class GameManager : MonoBehaviour
     public Slider healthBarFill;
     [Tooltip("Texto de tiempo")]
     public TMP_Text timeUI;
-
+    [Tooltip("Indicador de dash")]
     public SpriteRenderer dashIndicator;
+   [Tooltip("Indicador de daño al jugador")]
+    public Animator damageIndicatorAnimator;
+    [Tooltip("Panel de Game Over")]
     public GameObject gameOverPanel;
+    [Tooltip("Panel de pausa")]
     public GameObject pausePanel;
 
     private float currentTime = 0;
@@ -78,6 +82,18 @@ public class GameManager : MonoBehaviour
     {
         float fillAmount = (float)newHealth / player.maxHealth;
         healthBarFill.value = fillAmount;
+    }
+    
+    public void ShowDamageIndicator(float duration)
+    {
+        damageIndicatorAnimator.SetBool("IsInvincible", true);
+        StartCoroutine(HideDamageIndicator(duration));
+    }
+    
+    private IEnumerator HideDamageIndicator(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        damageIndicatorAnimator.SetBool("IsInvincible", false);
     }
 
     public void UpdateDashIndicator(bool isReady)
