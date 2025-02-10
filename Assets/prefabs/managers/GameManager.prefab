@@ -44,12 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4f15f6487c64dfcba32c3c228be4cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 160
+  gameDuration: 128
   player: {fileID: 0}
   bigCat: {fileID: 0}
   healthBarFill: {fileID: 0}
   timeUI: {fileID: 0}
   dashIndicator: {fileID: 0}
+  damageIndicatorAnimator: {fileID: 0}
   gameOverPanel: {fileID: 0}
   pausePanel: {fileID: 0}
   scoreGral: 0
