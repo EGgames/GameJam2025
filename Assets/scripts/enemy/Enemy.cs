@@ -96,9 +96,12 @@ public abstract class Enemy : MonoBehaviour
         _audioSource.clip = deathSounds[Random.Range(0, deathSounds.Length)];
         _audioSource.Play();
         
+        // Reproducir animación de muerte
+        _animator.SetTrigger("Death");
+        
         // Cuando termina el sonido de muerte, destruir el objeto
         Destroy(gameObject, _audioSource.clip.length);
         
-        GameManager.Instance.ScoreCount(); // Contar el score aquí
+        GameManager.Instance.OnEnemyKilled(); // Contar el score aquí
     }
 }

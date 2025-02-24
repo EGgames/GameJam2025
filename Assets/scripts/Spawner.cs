@@ -40,6 +40,7 @@ public class Spawner : MonoBehaviour
         if (canSpawn)
         {
             SpawnEnemy();
+            GameManager.Instance.enemiesLeft += numberOfSpawns;
         }
     }
 

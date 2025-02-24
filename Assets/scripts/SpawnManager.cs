@@ -48,6 +48,7 @@ namespace DefaultNamespace
             {
                 SpawnWave(wave);
                 PlayWaveMusic(wave);
+                GameManager.Instance.currentWave++;
                 
                 // Si no es la última oleada, esperar X segundos antes de detenerla y pasar a la siguiente
                 if (wave == waves[^1]) continue;

@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource pitchVariationSource;
     
     [Header("------ Music ------")] 
     [SerializeField] private AudioSource musicWave1;
@@ -39,12 +40,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         LoadVolume();
-        //     Play the music al unísono.
-        musicWave1.Play();
-        musicWave2.Play();
-        musicWave3.Play();
-        musicWave4.Play();
-        musicWave5.Play();
+        PlayMusic();
     }
 
     public void PlaySFX(AudioClip clip)
@@ -57,6 +53,31 @@ public class AudioManager : MonoBehaviour
     {
         // Reproducir un clip de sonido aleatorio
         sfxSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+    }
+    
+    public void PlaySFXWithPitchVariation(AudioClip clip, float minPitch = 0.85f, float maxPitch = 1.2f)
+    {
+        pitchVariationSource.pitch = Random.Range(minPitch, maxPitch);
+        pitchVariationSource.PlayOneShot(clip);
+    }
+
+    public void PlayMusic()
+    {
+        // Play the music al unísono.
+        musicWave1.Play();
+        musicWave2.Play();
+        musicWave3.Play();
+        musicWave4.Play();
+        musicWave5.Play();
+    }
+
+    public void PauseMusic()
+    {
+        musicWave1.Pause();
+        musicWave2.Pause();
+        musicWave3.Pause();
+        musicWave4.Pause();
+        musicWave5.Pause();
     }
     
     public void StopMusic()

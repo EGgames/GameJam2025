@@ -219,7 +219,7 @@ public class PlayerController : MonoBehaviour
         }
         
         // Reproducir sonido de disparo
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.playerBubbaShot);
+        AudioManager.Instance.PlaySFXWithPitchVariation(AudioManager.Instance.playerBubbaShot);
     }
 
 

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: "TU PLANETA EST\xC1 PERDID"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
-  m_sharedMaterial: {fileID: 2554912887052927788, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: c4ced86be694160499900314db6537cf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_text: UN RONRONEO ENSORDECEDOR ANUNCIA SU CONQUISTA...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
-  m_sharedMaterial: {fileID: 2554912887052927788, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 5fc59503007550b4dacb0cf793e7e39d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_text: JUGAR DE NUEVO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
-  m_sharedMaterial: {fileID: 2554912887052927788, guid: dcf38e10daa514b4d9d5f032a1098a5e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: c4ced86be694160499900314db6537cf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

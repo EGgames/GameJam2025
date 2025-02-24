@@ -71,7 +71,8 @@ public class ProyectileEnemy : Enemy
         shootCooldownSecs -= Time.deltaTime;
         if (shootCooldownSecs <= 0 && currentDistance < targetMaxDistance)
         {
-            Shoot();
+            // Trigger attack animation
+            _animator.SetTrigger("Attack");
             shootCooldownSecs = shootIntervalSecs;
         }
     }

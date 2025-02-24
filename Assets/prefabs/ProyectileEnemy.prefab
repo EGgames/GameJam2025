@@ -175,12 +175,12 @@ SpriteRenderer:
   m_SortingLayerID: 1169637791
   m_SortingLayer: 5
   m_SortingOrder: 40
-  m_Sprite: {fileID: 3206550811919491524, guid: 16c55993ba4df4bf48bbce6d3f9b6b2e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16c55993ba4df4bf48bbce6d3f9b6b2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -198,8 +198,8 @@ GameObject:
   - component: {fileID: 8895989000147735921}
   - component: {fileID: -619518173069144093}
   - component: {fileID: 2975158753886073811}
-  - component: {fileID: 8371753151225263630}
   - component: {fileID: 2969988438836121385}
+  - component: {fileID: 4159325358044517092}
   m_Layer: 3
   m_Name: ProyectileEnemy
   m_TagString: Enemy
@@ -332,23 +332,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!111 &8371753151225263630
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4267817652936222168}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 45a15b8ccc28e47f1b012fa1eede9398, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!82 &2969988438836121385
 AudioSource:
   m_ObjectHideFlags: 0
@@ -446,6 +429,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &4159325358044517092
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267817652936222168}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 71ed5356ad8a1420b8551227f33314ce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7882236346070108726
 GameObject:
   m_ObjectHideFlags: 0
