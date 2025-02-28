@@ -80,6 +80,6 @@ public class Spawner : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 1f);
         // Texto con la cantidad de enemigos restantes
-        Handles.Label(transform.position + Vector3.up, $"{numberOfSpawns - spawnCount}");
+        // Handles.Label(transform.position + Vector3.up, $"{numberOfSpawns - spawnCount}");
     }
 }
